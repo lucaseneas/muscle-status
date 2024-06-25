@@ -1,18 +1,19 @@
 interface User {
+  id: number;
   name: string;
   email: string;
   password: string;
+  userImgUrl: string;
+  trainingPlan: TrainingPlan[];
 }
 
-interface Dados {
-  user: User;
-  workout: Workout[];
-}
-
-interface Workout {
+interface TrainingPlan {
+  trainingPlanId: number;
   name: string;
   whoCreate: string;
   description: string;
+  creationDate: string;
+  imgUrl: string;
   workouts: Workouts[];
 }
 
@@ -38,183 +39,65 @@ interface Weight {
   lastDate: string;
 }
 
-export const dados: Dados =
+interface Dados {
+  users: User[];
+}
 
-{
-  "user": {
-    "name": "Lucas Eneas",
-    "email": "joao.silva@example.com",
-    "password": "senhaSegura123"
-  },
-  "workout": [
+export const dados: Dados = {
+  users: [
     {
-      "name": "Treino Lucas",
-      "whoCreate": "Lucas",
-      "description": "Descrição",
-      "workouts": [
+      id:1,
+      name: "Lucas Eneas",
+      email: "joao.silva@example.com",
+      password: "senhaSegura123",
+      userImgUrl : "Foto",
+      trainingPlan: [
         {
-          "letter": "A",
-          "description": "Peito e Triceps",
-          "exercises": [
+          trainingPlanId: 1,
+          name: "Treino Lucas",
+          whoCreate: "Lucas",
+          description: "Descrição",
+          creationDate: "2024-06-21",
+          imgUrl: "https://img.icons8.com/?size=100&id=sjh9Yrj8v34Y&format=png&color=000000",
+          workouts: [
             {
-              "exerciseId": 1,
-              "name": "Supino Reto",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" },{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Supino Inclinado",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Crucifixo",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Tríceps Pulley",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Mergulho em Paralelas",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Tríceps Francês",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            }
-          ]
-        },
-        {
-          "letter": "B",
-          "description": "Costas e Bíceps",
-          "exercises": [
-            {
-              "exerciseId": 1,
-              "name": "Barra Fixa",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Remada Curvada",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Puxada na Polia",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Rosca Direta",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Rosca Martelo",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Rosca Concentrada",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            }
-          ]
-        },
-        {
-          "letter": "C",
-          "description": "Pernas Completos",
-          "exercises": [
-            {
-              "exerciseId": 1,
-              "name": "Agachamento Livre",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Leg Press",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Extensão de Perna",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Flexão de Perna",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 4,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Elevação de Panturrilha",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
-            },
-            {
-              "exerciseId": 1,
-              "name": "Afundo",
-              "description": "15/12 - 12/10 - 10/8 - 8/6",
-              "sets": 3,
-              "rest": "1 min",
-              "weight": [{ "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }, { "weightNumber": "0", "type": "kg", "rep": 0,"lastDate":"2024-06-21" }]
+              letter: "A",
+              description: "Peito e Triceps",
+              exercises: [
+                {
+                  exerciseId: 1,
+                  name: "Supino Reto",
+                  description: "15/12 - 12/10 - 10/8 - 8/6",
+                  sets: 4,
+                  rest: "1 min",
+                  weight: [
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" }
+                  ]
+                },
+                {
+                  exerciseId: 2,
+                  name: "Supino Inclinado",
+                  description: "15/12 - 12/10 - 10/8 - 8/6",
+                  sets: 3,
+                  rest: "1 min",
+                  weight: [
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" }
+                  ]
+                }
+              ]
             }
           ]
         }
       ]
-    }
+      
+    },
+    
   ]
-}
+};
