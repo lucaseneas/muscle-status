@@ -1,7 +1,7 @@
 export default function Footer(){
     return(
         <>
-        <div className="h-16"></div>
+        
         <footer className="bg-primary  fixed bottom-0 w-screen h-16 flex items-center justify-center text-secondary">
                 <div className="w-1/3 h-full flex flex-col items-center justify-center ">
                     <div className="h-full w-20 hover:brightness-150 focus:brightness-150 bg-primary rounded-full flex flex-col items-center justify-center ">

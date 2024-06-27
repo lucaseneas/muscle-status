@@ -92,6 +92,38 @@ export const dados: Dados = {
                   ]
                 }
               ]
+            },{
+              letter: "B",
+              description: "Peito e Triceps",
+              exercises: [
+                {
+                  exerciseId: 1,
+                  name: "Supino Reto",
+                  description: "15/12 - 12/10 - 10/8 - 8/6",
+                  sets: 4,
+                  rest: "1 min",
+                  weight: [
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" }
+                  ]
+                },
+                {
+                  exerciseId: 2,
+                  name: "Supino Inclinado",
+                  description: "15/12 - 12/10 - 10/8 - 8/6",
+                  sets: 3,
+                  rest: "1 min",
+                  weight: [
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" },
+                    { weightNumber: "0", type: "kg", rep: 0, lastDate: "2024-06-21" }
+                  ]
+                }
+              ]
             }
           ]
         }
