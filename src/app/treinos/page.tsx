@@ -107,7 +107,7 @@ export default function homePage() {
                                     <div className=" w-1/4 flex flex-col items-center mr-4">
                                         <p className="text-xs text-gray-900">Data de criação</p>
                                         <p className="text-sm leading-5 text-gray-900">{res2.creationDate}</p>
-                                        <Link href='/treinos/lista'><Button className='bg-secondary' size="medium" variant="contained">Ver</Button></Link>
+                                        <Link href='/treinos/lista'><Button className='!bg-secondary' size="medium" variant="contained">Ver</Button></Link>
 
                                     </div>
                                 </li>
