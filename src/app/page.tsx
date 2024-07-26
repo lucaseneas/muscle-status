@@ -1,20 +1,21 @@
 "use client";
 import { LoginData } from "@/types/login";
-import { signIn } from "next-auth/react";
+import { Alert, Collapse } from "@mui/material";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { FormEvent, useState } from "react";
 
 
 
-//export default function Home() {
+export default function Home() {
 
-  //const Home: React.FC = () =>{
-export default function Home(){
-  
+  const [open, setOpen] = React.useState(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const router = useRouter();
+
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,8 +25,12 @@ export default function Home(){
       password: password,
     });
 
-    if(resp!.ok){
+    if (resp!.ok) {
       router.push("./treinos")
+    }
+    else {
+      const error = resp?.error;
+      setOpen(true)
     }
     /*
     e.preventDefault();
@@ -107,22 +112,26 @@ export default function Home(){
           </div>
 
           <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:brightness-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Login
-              </button>
+            <button
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:brightness-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Login
+            </button>
           </div>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Não tem cadastro?{' '}
-          <a href="./register" className="font-semibold leading-6 text-secondary hover:brightness-75">
+          <a onClick={()=> router.push("/cadastro")} className="font-semibold leading-6 text-secondary hover:brightness-75">
             Clique aqui e cadastre-se
           </a>
         </p>
       </div>
+      <Collapse className=" !absolute bottom-10" in={open}>
+        <Alert severity="error">Usuario ou senha incorreta, Tente Novamente</Alert>
+        </Collapse>
+
     </div>
 
 

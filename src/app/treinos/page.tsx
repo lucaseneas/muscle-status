@@ -5,13 +5,14 @@ import Link from "next/link"
 import Image from 'next/image'
 import { dados } from './../../data';
 import { useRouter } from 'next/navigation';
+import {useSession } from "next-auth/react";
 
 import Button from '@mui/material/Button';
 import { Box, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from "react";
+import React, { useEffect } from "react";
 
 
 
@@ -27,6 +28,7 @@ const actions = [
 
 export default function homePage() {
     const router = useRouter();
+
     function actionBtn(func: string) {
         if (func == "Add") {
             handleOpen();

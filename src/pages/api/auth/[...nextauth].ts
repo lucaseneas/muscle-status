@@ -2,13 +2,14 @@ import { Password, Token } from "@mui/icons-material";
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 
+
 export default NextAuth({
-    
-    secret : process.env.NEXT_AUTH_SECRET,
-    session : {
+
+    secret: process.env.NEXT_AUTH_SECRET,
+    session: {
         strategy: "jwt"
     },
-    jwt:{secret: process.env.JWT_SIGININ_PRIVATE_KEY, maxAge: 60*60*60},
+    jwt: { secret: process.env.JWT_SIGININ_PRIVATE_KEY, maxAge: 60 * 60 * 60 },
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
@@ -26,57 +27,53 @@ export default NextAuth({
                 if (!credentials?.email && !credentials?.password) {
                     throw new Error("Email e senha requerido")
                 }
-                
+
                 const url = `${process.env.BASEURL}`
 
-                return await fetch(url+"/auth/login", {
+
+                const response = await fetch(url+"/auth/login", {
                     method: "POST",
-                    headers: { "Content-type": "application/json;charset=UTF-8" },
+                    headers: { "Content-Type": "application/json;charset=UTF-8" },
                     body: JSON.stringify({
                         email: credentials.email,
                         password: credentials.password,
                     }),
-                    
-                })
-                    .then((response) => response.json())
-                    .then((res) => {
-                        const authorization = { id: res.token };
-                        if (authorization.id) {
-                            
-                            return authorization;
-                        }
-                        else {
-                            throw new Error("Usuario não encontrado");
-                        }
-                    })
-                    .catch( (e) => {
-                        console.log("Error auth", e)
-                        throw new Error("Ocorreu um erro inesperado", e.message)
-                    });
-                // Add logic here to look up the user from the credentials supplied
+                });
 
+                const res = await response.json();
+
+                if (response.ok && res.token && res.email) {
+                    // Retorna um objeto com as informações do usuário que serão armazenadas no JWT
+                    return {
+                        token: res.token,
+                        email: res.email,
+                    };
+                }
+
+                // Se a autenticação falhar, retorna null
+                return null;
+                
             }
         })
     ],
 
     callbacks: {
-        async jwt({ token, account }) {
-           
-
-          // Persist the OAuth access_token to the token right after signin
-          if (token.sub) {
-            return token
-          }else{
-            throw new Error("Usuario invalido")
-          }
-          
-        },
-        async session({ session, token, user }) {
-           if(!token.sub){
-            throw new Error("Sessão invalida");
-           }
-          // Send properties to the client, like an access_token from a provider.
-          return { ...session, accessToken: token.sub}
-        }
-      }
+        async jwt({ token, user }) {
+            if (user) {
+                console.log(token)
+              // Inclui informações do usuário no token
+              token.email = user.email;
+              token.token = user.token;
+            }
+            return token;
+          },
+          async session({ session, token }) {
+            if (token) {
+              // Inclui informações do token na sessão
+              session.user.email = token.email;
+              session.accessToken = token.token;
+            }
+            return session;
+          },
+    }
 });

@@ -3,8 +3,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { metadata} from './metadata';
+import { useEffect } from "react";
 
 
 
@@ -17,6 +18,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+ 
+
   return (
     <html lang="pt-BR">
         <head>
@@ -26,7 +30,7 @@ export default function RootLayout({
         <body className={`${inter.className} h-screen`}>
           
         <SessionProvider>
-          {children}
+         {children}
         </SessionProvider>
           
         </body>
