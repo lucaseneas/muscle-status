@@ -47,6 +47,7 @@ export default NextAuth({
                     return {
                         token: res.token,
                         email: res.email,
+                        id: res.id
                     };
                 }
 
@@ -64,6 +65,7 @@ export default NextAuth({
               // Inclui informações do usuário no token
               token.email = user.email;
               token.token = user.token;
+              token.id = user.id;
             }
             return token;
           },
@@ -72,6 +74,7 @@ export default NextAuth({
               // Inclui informações do token na sessão
               session.user.email = token.email;
               session.accessToken = token.token;
+              session.id = token.id;
             }
             return session;
           },

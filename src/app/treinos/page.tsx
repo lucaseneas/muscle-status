@@ -5,14 +5,16 @@ import Link from "next/link"
 import Image from 'next/image'
 import { dados } from './../../data';
 import { useRouter } from 'next/navigation';
-import {useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { useWorkoutService } from "../services/workout.services"
 
 import Button from '@mui/material/Button';
 import { Box, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Workout } from "@/types/workout"
 
 
 
@@ -28,7 +30,10 @@ const actions = [
 
 export default function homePage() {
     const router = useRouter();
-
+    //////////////////////////////
+    const session1 = getSession()
+    const { data: session, status, update } = useSession()
+////////////////////////////////////////////////////
     function actionBtn(func: string) {
         if (func == "Add") {
             handleOpen();
@@ -39,6 +44,22 @@ export default function homePage() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [data, setData] = useState<Workout[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await useWorkoutService().findWorkoutByIdUser("1");
+                console.log("Session 1",session1);///////////
+                console.log("Session 2",session,status)//////////////
+                setData(response);
+            }
+            catch (error) {
+                console.error('Erro ao buscar dados', error);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
 
@@ -86,7 +107,7 @@ export default function homePage() {
                             </div>
                             <div className="flex justify-center bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 
-                                <Button  variant="contained">Adicionar</Button>
+                                <Button variant="contained">Adicionar</Button>
                             </div>
                         </div>
                     </div>
@@ -94,44 +115,50 @@ export default function homePage() {
             </Modal>
             <section className="h-auto">
                 <ul role="list" className="divide-y  divide-gray-100">
-
-                    {dados.users.map((res, index) => (
+                    {data.map((res, index) => (
                         <div key={index}>
-                            {res.trainingPlan.map((res2, index2) => (
-                                <li key={index2} className="flex justify-between gap-x-6 py-6">
-                                    <div className="flex pl-4 min-w-0 gap-x-6">
-                                        <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src={res2.imgUrl} width={500} height={500} alt="Picture of the author" /></div>
-                                        <div className="min-w-0 flex-auto">
-                                            <p className="text-sm font-semibold leading-6 text-gray-900">{res2.name}</p>
-                                            <p className="mt-1 truncate text-xs leading-7 text-gray-500">Criado por: {res2.whoCreate} </p>
-                                        </div>
-                                    </div>
-                                    <div className=" w-1/4 flex flex-col items-center mr-4">
-                                        <p className="text-xs text-gray-900">Data de criação</p>
-                                        <p className="text-sm leading-5 text-gray-900">{res2.creationDate}</p>
-                                        <Link href='/treinos/lista'><Button className='!bg-secondary' size="medium" variant="contained">Ver</Button></Link>
 
+                            <li className="flex justify-between gap-x-6 py-6">
+                                <div className="flex pl-4 min-w-0 gap-x-6">
+                                    {(!res.name)?(
+                                        <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src="" width={500} height={500} alt="Picture of the author" /></div>
+                                    ) : (
+                                        <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src="https://img.icons8.com/?size=100&id=sjh9Yrj8v34Y&format=png&color=000000" width={500} height={500} alt="Picture of the author" /></div>
+                                    )}
+                                    
+                                    <div className="min-w-0 flex-auto">
+                                        <p className="text-sm font-semibold leading-6 text-gray-900">{res.name}</p>
+                                        <p className="mt-1 truncate text-xs leading-7 text-gray-500">Criado por: {res.description}</p>
                                     </div>
-                                </li>
-                            ))}
+                                </div>
+                                <div className=" w-1/4 flex flex-col items-center mr-4">
+                                    <p className="text-xs text-gray-900">Data de criação</p>
+                                    <p className="text-sm leading-5 text-gray-900"></p>
+                                    <Link href='/treinos/lista'><Button className='!bg-secondary' size="medium" variant="contained">Ver</Button></Link>
+
+                                </div>
+                            </li>
+
                         </div>
                     ))}
+
+
 
                 </ul>
             </section>
 
             <div className="fixed right-4 bottom-28">
                 <SpeedDial
-                    
+
                     ariaLabel="SpeedDial basic example"
                     sx={{ position: 'absolute', bottom: 16, right: 16 }}
-                    icon={<SpeedDialIcon  />}
+                    icon={<SpeedDialIcon />}
                 >
                     {actions.map((action) => (
 
 
                         <SpeedDialAction
-                            
+
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}

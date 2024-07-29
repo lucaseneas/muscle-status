@@ -10,6 +10,8 @@ export const httpClient: AxiosInstance = Axios.create({
 
 httpClient.interceptors.request.use(async function (config) {
     const session: any = await getSession();
+
+    console.log("Sessão:",session);
     if (session?.accessToken) {
         config.headers.Authorization = session!.accessToken
             ? `Bearer ${session.accessToken}`

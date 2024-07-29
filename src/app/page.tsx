@@ -27,6 +27,7 @@ export default function Home() {
 
     if (resp!.ok) {
       router.push("./treinos")
+      localStorage.setItem("teste","teste");
     }
     else {
       const error = resp?.error;
