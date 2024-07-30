@@ -17,7 +17,7 @@ export const useWorkoutService = () => {
     };
 
     //const findWorkoutByIdUser = async (): Promise<Workout[]> => {
-    const findWorkoutByIdUser = async (id : string) => {
+    const findWorkoutByIdUser = async (id : number) => {
         const response: AxiosResponse<Workout[]> = await httpClient.get<Workout[]>(`${url}/user/${id}`);
         return response.data;
       };

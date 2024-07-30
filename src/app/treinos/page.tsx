@@ -15,6 +15,8 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from "react";
 import { Workout } from "@/types/workout"
+import { Session } from "@/types/session"
+
 
 
 
@@ -30,29 +32,37 @@ const actions = [
 
 export default function homePage() {
     const router = useRouter();
-    //////////////////////////////
     const session1 = getSession()
     const { data: session, status, update } = useSession()
-////////////////////////////////////////////////////
+
     function actionBtn(func: string) {
         if (func == "Add") {
             handleOpen();
 
         }
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const handleNavigation = () => {
+        router.push('./treinos/lista');
+      };
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [data, setData] = useState<Workout[]>([]);
 
+    const sectionId = (session as Session).id;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await useWorkoutService().findWorkoutByIdUser("1");
-                console.log("Session 1",session1);///////////
-                console.log("Session 2",session,status)//////////////
-                setData(response);
+                if(sectionId !== undefined){
+                    const response = await useWorkoutService().findWorkoutByIdUser(sectionId);
+                    setData(response);
+                }
+                else{
+                    console.log("Não foi localizado o Id de usuario")
+                }
             }
             catch (error) {
                 console.error('Erro ao buscar dados', error);
@@ -134,7 +144,7 @@ export default function homePage() {
                                 <div className=" w-1/4 flex flex-col items-center mr-4">
                                     <p className="text-xs text-gray-900">Data de criação</p>
                                     <p className="text-sm leading-5 text-gray-900"></p>
-                                    <Link href='/treinos/lista'><Button className='!bg-secondary' size="medium" variant="contained">Ver</Button></Link>
+                                    <Button onClick={() => handleNavigation()} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
 
                                 </div>
                             </li>
