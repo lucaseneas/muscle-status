@@ -1,7 +1,7 @@
 "use client"
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
-import { dados } from '../../../../data';
+import { dados } from '../../data';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -25,7 +25,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 
 
 
-export default function workNumber({ params, }: { params: { treinoLetra: string }; }) {
+export default function workNumber({ params, }: { params: { idTreino: string }; }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -104,7 +104,7 @@ export default function workNumber({ params, }: { params: { treinoLetra: string 
                 </div>
             </Modal>
 
-            <Header name={'Treino ' + params.treinoLetra}></Header>
+            <Header name={'Treino ' + params.idTreino}></Header>
             <section className="my-2 h-full">
 
                 {dados.users.map((result, resultIndex) => (
@@ -113,7 +113,7 @@ export default function workNumber({ params, }: { params: { treinoLetra: string 
                             <div key={index1}>
                                 {res.workouts.map((res2, index2) => (
                                     <div key={index2}>
-                                        {res2.letter == params.treinoLetra && (
+                                        {res2.letter == params.idTreino && (
                                             <div >{res2.exercises.map((res3) => (
                                                 <Accordion>
                                                     <AccordionSummary

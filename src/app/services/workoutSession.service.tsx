@@ -1,10 +1,10 @@
 import { httpClient } from "@/http";
-import { WorkoutSession } from "@/types/WorkoutSession";
+import { WorkoutSession } from "@/types/workoutSession";
 import { AxiosResponse } from "axios";
 require('dotenv').config();
 
 const baseURL = process.env.NEXT_PUBLIC_BASEURL;
-const registerEndPoint = "/workoutSession";
+const registerEndPoint = "/workout-session";
 
 const url = baseURL + registerEndPoint;
 

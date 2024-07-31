@@ -30,10 +30,13 @@ const actions = [
 
 
 
-export default function homePage() {
+export default function workout() {
     const router = useRouter();
-    const session1 = getSession()
     const { data: session, status, update } = useSession()
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const sectionId = (session as Session).id;
 
     function actionBtn(func: string) {
         if (func == "Add") {
@@ -41,18 +44,13 @@ export default function homePage() {
 
         }
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const handleNavigation = () => {
-        router.push('./treinos/lista');
+    const handleNavigation = (id:number) => {
+        router.push(`./treinos/${id}`);
       };
-
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    
+    
+    //Requisição na API
     const [data, setData] = useState<Workout[]>([]);
-
-    const sectionId = (session as Session).id;
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -144,8 +142,10 @@ export default function homePage() {
                                 <div className=" w-1/4 flex flex-col items-center mr-4">
                                     <p className="text-xs text-gray-900">Data de criação</p>
                                     <p className="text-sm leading-5 text-gray-900"></p>
-                                    <Button onClick={() => handleNavigation()} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
-
+                                    {res.id !== undefined && res.id !== null &&(
+                                        <Button onClick={() => handleNavigation(res.id as number)} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
+                                    )}
+                                
                                 </div>
                             </li>
 
