@@ -35,7 +35,7 @@ export default function workoutSession({ params }: { params: { idTreino: number 
                 {data.map((res, index1) => (
                     <div key={index1}>
 
-                        <Link href={`/treinos/lista/`}>
+                        <Link href={`/1`}>
                             <Card className='!bg-secondary h-28 rounded-md p-2 m-4 flex flex-col items-center justify-center hover:scale-1'>
                                 <h2 className="font-bold text-xl">Treino &nbsp;{res.name}</h2>
                                 <p className="text-xs">{res.description}</p>
