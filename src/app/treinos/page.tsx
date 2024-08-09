@@ -3,8 +3,8 @@ import Footer from "@/components/Footer/Footer"
 import Header from "@/components/Header/Header"
 import Link from "next/link"
 import Image from 'next/image'
-import { dados } from './../../data';
-import { useRouter } from 'next/navigation';
+
+import { usePathname, useRouter } from 'next/navigation';
 import { getSession, useSession } from "next-auth/react";
 import { useWorkoutService } from "../services/workout.services"
 
@@ -16,9 +16,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from "react";
 import { Workout } from "@/types/workout"
 import { Session } from "@/types/session"
+import { metadata } from "../metadata"
+import { Router } from "next/router"
 
 
-
+metadata.pageTitle = "Treinos"
 
 
 
@@ -36,7 +38,8 @@ export default function workout() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const sectionId = (session as Session).id;
+    const sectionId = (session as Session)?.id;
+    const pathname = usePathname();
 
     function actionBtn(func: string) {
         if (func == "Add") {
@@ -44,21 +47,22 @@ export default function workout() {
 
         }
     }
-    const handleNavigation = (id:number) => {
+    const handleNavigation = (id: number) => {
         router.push(`./treinos/${id}`);
-      };
+    };
+
     
-    
+
     //Requisição na API
     const [data, setData] = useState<Workout[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if(sectionId !== undefined){
+                if (sectionId !== undefined) {
                     const response = await useWorkoutService().findWorkoutByIdUser(sectionId);
                     setData(response);
                 }
-                else{
+                else {
                     console.log("Não foi localizado o Id de usuario")
                 }
             }
@@ -69,12 +73,16 @@ export default function workout() {
         fetchData();
     }, []);
 
+
+
+
+
     return (
 
 
-        <main className="h-screen">
+        <main title="Treinos" className="h-screen">
 
-            <Header name='Treinos'></Header>
+
 
             <Modal
                 open={open}
@@ -128,12 +136,12 @@ export default function workout() {
 
                             <li className="flex justify-between gap-x-6 py-6">
                                 <div className="flex pl-4 min-w-0 gap-x-6">
-                                    {(!res.name)?(
+                                    {(!res.name) ? (
                                         <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src="" width={500} height={500} alt="Picture of the author" /></div>
                                     ) : (
                                         <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src="https://img.icons8.com/?size=100&id=sjh9Yrj8v34Y&format=png&color=000000" width={500} height={500} alt="Picture of the author" /></div>
                                     )}
-                                    
+
                                     <div className="min-w-0 flex-auto">
                                         <p className="text-sm font-semibold leading-6 text-gray-900">{res.name}</p>
                                         <p className="mt-1 truncate text-xs leading-7 text-gray-500">Criado por: {res.description}</p>
@@ -142,10 +150,10 @@ export default function workout() {
                                 <div className=" w-1/4 flex flex-col items-center mr-4">
                                     <p className="text-xs text-gray-900">Data de criação</p>
                                     <p className="text-sm leading-5 text-gray-900"></p>
-                                    {res.id !== undefined && res.id !== null &&(
+                                    {res.id !== undefined && res.id !== null && (
                                         <Button onClick={() => handleNavigation(res.id as number)} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
                                     )}
-                                
+
                                 </div>
                             </li>
 

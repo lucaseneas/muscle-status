@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useUserService } from "../services/user.services";
 import { User } from "@/types/user";
+import { Button } from "@mui/material";
 
 export default function registerPage() {
     const userService = useUserService();
@@ -19,7 +20,7 @@ export default function registerPage() {
 
     return (
         <main className="h-screen overflow-hidden">
-            <Header name='Cadastre-se' />
+            <Header name='Cadastre-se' btnLeft={true} />
 
             <div className=" p-12">
                 <h2 className="text-start text-2xl font-bold leading-9 tracking-tight text-black mb-8">
@@ -85,12 +86,7 @@ export default function registerPage() {
                             />
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:brightness-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Cadastre-se
-                    </button>
+                    <Button className="!bg-secondary font-semibold flex w-full justify-center" type="submit" variant="contained">Cadastre-se</Button>
                 </form>
 
             </div>

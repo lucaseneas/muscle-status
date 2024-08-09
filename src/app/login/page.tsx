@@ -1,6 +1,6 @@
 "use client";
 import { LoginData } from "@/types/login";
-import { Alert, Collapse } from "@mui/material";
+import { Alert, Button, Collapse } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -8,7 +8,7 @@ import { FormEvent, useState } from "react";
 
 
 
-export default function Home() {
+export default function Login() {
 
   const [open, setOpen] = React.useState(false);
   const [email, setEmail] = useState<string>('');
@@ -33,27 +33,6 @@ export default function Home() {
       const error = resp?.error;
       setOpen(true)
     }
-    /*
-    e.preventDefault();
-
-     //Chamada à API de login
-    const response = await fetch('http://localhost:8080/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password } as LoginData),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Redirecionar para a página inicial ou outra página
-      const token = data.token;
-      console.log("token:" + token);
-      localStorage.setItem("token",token);
-    } else {
-      setError(data.message || 'Erro ao fazer login');
-    }
-      */
   };
 
   return (
@@ -113,12 +92,7 @@ export default function Home() {
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:brightness-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Login
-            </button>
+          <Button className="!bg-secondary font-semibold flex w-full justify-center" type="submit" variant="contained">Login</Button>
           </div>
         </form>
 

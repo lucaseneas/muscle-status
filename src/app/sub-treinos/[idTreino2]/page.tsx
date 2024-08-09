@@ -122,7 +122,6 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
                 </div>
             </Modal>
 
-            <Header name={'Treino ' + params.idTreino2}></Header>
             <section className="my-2 h-full">
 
 
