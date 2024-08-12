@@ -9,10 +9,11 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 type HeaderProps = {
     name: string
-    btnLeft: boolean
+    btnLeft?: boolean
+    btnRight?: boolean
 }
 
-export default function Header({ name, btnLeft }: HeaderProps) {
+export default function Header({ name, btnLeft, btnRight }: HeaderProps) {
 
     const router = useRouter();
     return (
@@ -27,10 +28,11 @@ export default function Header({ name, btnLeft }: HeaderProps) {
                         </button>
                     ) : null}
                     <Image alt='logo' height={80} src={logo} />
-                    <IconButton className="!absolute right-0 hover:brightness-150" onClick={() => (signOut())} aria-label="delete">
-                        <ExitToAppIcon className="!text-secondary"  />
-                    </IconButton>
-
+                    {(btnRight == true) ? (
+                        <IconButton className="!absolute right-0 hover:brightness-150" onClick={() => (signOut())} aria-label="delete">
+                            <ExitToAppIcon className="!text-secondary" />
+                        </IconButton>
+                    ) : null}
                 </div>
             </header>
         </>

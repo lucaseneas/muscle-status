@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useUserService } from "../services/user.services";
 import { User } from "@/types/user";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 export default function registerPage() {
     const userService = useUserService();

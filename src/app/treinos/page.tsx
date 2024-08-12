@@ -9,15 +9,17 @@ import { getSession, useSession } from "next-auth/react";
 import { useWorkoutService } from "../services/workout.services"
 
 import Button from '@mui/material/Button';
-import { Box, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from "@mui/material";
+import { Box, Breadcrumbs, Chip, emphasize, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, styled, TextField, Typography } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Workout } from "@/types/workout"
 import { Session } from "@/types/session"
 import { metadata } from "../metadata"
 import { Router } from "next/router"
+import Link2 from '@mui/material/Link';
+import Loading from "@/components/Loading/Loading"
 
 
 metadata.pageTitle = "Treinos"
@@ -51,7 +53,7 @@ export default function workout() {
         router.push(`./treinos/${id}`);
     };
 
-    
+
 
     //Requisição na API
     const [data, setData] = useState<Workout[]>([]);
@@ -74,16 +76,17 @@ export default function workout() {
     }, []);
 
 
-
-
-
     return (
-
-
         <main title="Treinos" className="h-screen">
-
-
-
+            <Breadcrumbs className="flex items-center justify-center" aria-label="breadcrumb">
+                <Link2 underline="hover" color="inherit" href="#">
+                    Home
+                </Link2>
+                <Link2 underline="hover" color="inherit" href="#">
+                    Catalog
+                </Link2>
+                <Typography color="text.primary">Belts</Typography>
+            </Breadcrumbs>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -92,7 +95,6 @@ export default function workout() {
             >
                 <div className=" flex items-center justify-center overflow-y-auto">
                     <div className="flex min-h-full w-full items-end justify-center p-4 text-center sm:items-center">
-
                         <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <Box
@@ -105,7 +107,6 @@ export default function workout() {
                                 >
                                     <h2 className='text-xl mb-5 font-bold'>Adicionar novo treino</h2>
                                     <div className="flex">
-
                                         <TextField
                                             required
                                             id="outlined-required"
@@ -113,16 +114,13 @@ export default function workout() {
                                             defaultValue=""
                                         />
                                         <TextField
-
                                             id="outlined-required"
                                             label="Descrição"
                                             defaultValue=""
                                         /></div>
-
                                 </Box>
                             </div>
                             <div className="flex justify-center bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-
                                 <Button variant="contained">Adicionar</Button>
                             </div>
                         </div>
@@ -133,7 +131,6 @@ export default function workout() {
                 <ul role="list" className="divide-y  divide-gray-100">
                     {data.map((res, index) => (
                         <div key={index}>
-
                             <li className="flex justify-between gap-x-6 py-6">
                                 <div className="flex pl-4 min-w-0 gap-x-6">
                                     {(!res.name) ? (
@@ -141,7 +138,6 @@ export default function workout() {
                                     ) : (
                                         <div className="h-16 w-16 flex-none rounded-full bg-gray-50"><Image src="https://img.icons8.com/?size=100&id=sjh9Yrj8v34Y&format=png&color=000000" width={500} height={500} alt="Picture of the author" /></div>
                                     )}
-
                                     <div className="min-w-0 flex-auto">
                                         <p className="text-sm font-semibold leading-6 text-gray-900">{res.name}</p>
                                         <p className="mt-1 truncate text-xs leading-7 text-gray-500">Criado por: {res.description}</p>
@@ -153,45 +149,29 @@ export default function workout() {
                                     {res.id !== undefined && res.id !== null && (
                                         <Button onClick={() => handleNavigation(res.id as number)} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
                                     )}
-
                                 </div>
                             </li>
-
                         </div>
                     ))}
-
-
-
                 </ul>
             </section>
-
             <div className="fixed right-4 bottom-28">
                 <SpeedDial
-
                     ariaLabel="SpeedDial basic example"
                     sx={{ position: 'absolute', bottom: 16, right: 16 }}
                     icon={<SpeedDialIcon />}
                 >
                     {actions.map((action) => (
-
-
                         <SpeedDialAction
-
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}
                             onClick={() => actionBtn(action.name)}>
-
                         </SpeedDialAction>
-
-
                     ))}
-
                 </SpeedDial>
             </div>
             <Footer></Footer>
-
-        </main>
-
+        </main> 
     )
 }

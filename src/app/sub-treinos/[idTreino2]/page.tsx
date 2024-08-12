@@ -10,6 +10,7 @@ import { Avatar, Box, Button, Fab, Modal, TextField, Typography } from "@mui/mat
 
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
+import SaveIcon from '@mui/icons-material/Save';
 
 
 import * as React from 'react';
@@ -21,7 +22,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { WorkoutSessionExercise } from "@/types/workoutSessionExercise";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useWorkoutSessionExerciseService } from "@/app/services/workoutSessionExercise.serivce";
 
 
@@ -32,7 +33,29 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [weight, setWeight] = useState<number>();
+    const [repetition, setRepetition] = useState<number>();
+    
+    const createLog = async (e: FormEvent) => {
+        e.preventDefault();
+        const resp = await signIn('credentials', {
+          redirect: false,
+          email: email,
+          password: password,
+        });
+    
+        if (resp!.ok) {
+          router.push("./treinos")
+          localStorage.setItem("teste","teste");
+        }
+        else {
+          const error = resp?.error;
+          setOpen(true)
+        }
+      };
 
+
+    //Consulta na API
     const [data, setData] = useState<WorkoutSessionExercise[]>([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +69,7 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
         }
         fetchData();
     }, []);
-    
+
 
     return (
         <main className=" h-full">
@@ -124,70 +147,80 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
 
             <section className="my-2 h-full">
 
+                <form>
+                    {data.map((res, index) => (
+                        <Accordion key={index}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                            >
 
+                                <div className="flex items-center gap-5">
+                                    <Avatar>
+                                        H
+                                    </Avatar>
+                                    {res.exercise.name}
+                                </div>
+                            </AccordionSummary>
 
-                {data.map((res, index) => (
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
+                            <AccordionDetails>
+                                <div className="flex mb-4">
+                                    <div className="w-3/4">
+                                        <h6 className="text-xs">Obs.: DESCRIÇÃO</h6>
 
-                            <div className="flex items-center gap-5">
-                                <Avatar>
-                                    H
-                                </Avatar>
-                                {res.exercise.name}
-                            </div>
-                        </AccordionSummary>
-                        
-                        <AccordionDetails>
-                            <div className="flex mb-4">
-                                <div className="w-3/4">
-                                    <h6 className="text-xs">Obs.: DESCRIÇÃO</h6>
+                                        <>
+                                            <div className="flex gap-4 my-2">
 
-                                    <>
-                                        <div className="flex gap-4 my-2">
+                                                <h2>Série </h2>
+                                                <input 
+                                                className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                                type="text" 
+                                                placeholder="Carga"
+                                                required
+                                                onChange={(e) => setWeight(e.target.value)}
+                                                />
+                                                <select className="shadow appearance-none border rounded w-10 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                                    <option value='0'>Kg</option>
+                                                    <option value='1'>Lbs</option>
+                                                    <option value='3'>P</option>
+                                                </select>
+                                                <input className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                                type='number' 
+                                                placeholder="Rep"
+                                                required
+                                                onChange={(e) => setRepetition(e.target.value)}
+                                                 />
+                                            </div>
+                                            <h3 className="text-xs">Ultima mudança em DATA</h3>
+                                        </>
 
-                                            <h2>Série </h2>
-                                            <input className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Carga" />
-                                            <select className="shadow appearance-none border rounded w-10 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                                <option value='0'>Kg</option>
-                                                <option value='1'>Lbs</option>
-                                                <option value='3'>P</option>
-                                            </select>
-                                            <input className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' placeholder="Rep" />
-                                        </div>
-                                        <h3 className="text-xs">Ultima mudança em DATA</h3>
-                                    </>
+                                    </div>
+
+                                    <div className="flex gap-4 pr-2 flex-col w-1/4 justify-center items-end">
+                                        <Fab size='medium' color="primary" aria-label="add">
+                                            <ContentPasteIcon onClick={handleOpen} />
+
+                                        </Fab>
+                                        <Fab size='medium' color="primary" aria-label="edit">
+                                            <SaveIcon />
+                                        </Fab>
+                                    </div>
 
                                 </div>
 
-                                <div className="flex gap-4 pr-2 flex-col w-1/4 justify-center items-end">
-                                    <Fab size='medium' color="primary" aria-label="add">
-                                        <ContentPasteIcon onClick={handleOpen} />
+                                <TextField
+                                    id="outlined-multiline-static"
+                                    label="Observações"
+                                    fullWidth={true}
+                                    multiline
+                                    rows={2}
 
-                                    </Fab>
-                                    <Fab size='medium' color="primary" aria-label="edit">
-                                        <PublishedWithChangesOutlinedIcon />
-                                    </Fab>
-                                </div>
-                            </div>
-
-                            <TextField
-                                id="outlined-multiline-static"
-                                label="Observações"
-                                fullWidth={true}
-                                multiline
-                                rows={2}
-                                
-                            />
-
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
-
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
+                </form>
 
 
             </section>

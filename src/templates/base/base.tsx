@@ -1,11 +1,12 @@
 import { metadata } from "@/app/metadata";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
+import Loading from "@/components/Loading/Loading";
 import { stat } from "fs";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { Router } from "next/router";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useEffect } from "react";
 
 
@@ -33,15 +34,25 @@ export const Base = ({ children }: Props) => {
         console.log(status)
     }, [status, router]);
 
+
+    const pathname = usePathname();
+
+    useEffect(() => {
+        console.log('Rota mudou para:', pathname);
+    }, [pathname]);
+
     return (
         <>
-            {(status == "authenticated") ? (
-                <Header btnLeft={true} name={metadata.pageTitle}></Header>
-            ) : null}
-            {children}
-            {(status == "authenticated") ? (
-                <Footer></Footer>
-            ) : null}
+            <Suspense fallback={<><Loading/>{console.log("Fallback base")}</>}>
+                
+                {(status == "authenticated") ? (
+                    <Header btnLeft={true} btnRight={true} name={metadata.pageTitle}></Header>
+                ) : null}
+                {children}
+                {(status == "authenticated") ? (
+                    <Footer></Footer>
+                ) : null}
+            </Suspense>
         </>
     )
 }
