@@ -1,7 +1,8 @@
 import { httpClient } from "@/http";
 import { User } from "@/types/user";
 import { Workout } from "@/types/workout";
-import { AxiosResponse } from "axios";
+import { Description } from "@mui/icons-material";
+import axios, { AxiosResponse } from "axios";
 require('dotenv').config();
 
 const baseURL = process.env.NEXT_PUBLIC_BASEURL;
@@ -22,5 +23,16 @@ export const useWorkoutService = () => {
         return response.data;
       };
 
-    return { create , findWorkoutByIdUser};
+    const addWorkoutToUser = async (workout: Workout, idUser: number) => {
+        try {
+            const response = await httpClient.post(`${url}/user/${idUser}`,workout)
+            return response.status >= 200 && response.status < 300;
+          }
+          catch (error) {
+            console.error("Erro ao criar o treino:", error);
+            return false;
+          }
+    }
+   
+    return { create , findWorkoutByIdUser, addWorkoutToUser};
 }

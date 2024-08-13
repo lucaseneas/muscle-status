@@ -1,5 +1,5 @@
 export interface Workout {
     id?: number;
-    name : string,
-    description: string
+    name : any,
+    description?: string
 }

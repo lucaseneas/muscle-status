@@ -31,7 +31,7 @@ export const Base = ({ children }: Props) => {
             console.log("redirect")
             router.push("/treinos")
         }
-        console.log(status)
+      
     }, [status, router]);
 
 
@@ -42,9 +42,7 @@ export const Base = ({ children }: Props) => {
     }, [pathname]);
 
     return (
-        <>
-            <Suspense fallback={<><Loading/>{console.log("Fallback base")}</>}>
-                
+        <>  
                 {(status == "authenticated") ? (
                     <Header btnLeft={true} btnRight={true} name={metadata.pageTitle}></Header>
                 ) : null}
@@ -52,7 +50,6 @@ export const Base = ({ children }: Props) => {
                 {(status == "authenticated") ? (
                     <Footer></Footer>
                 ) : null}
-            </Suspense>
         </>
     )
 }
