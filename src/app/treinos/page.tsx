@@ -9,7 +9,7 @@ import { getSession, useSession } from "next-auth/react";
 import { useWorkoutService } from "../services/workout.services"
 
 import Button from '@mui/material/Button';
-import { Alert, Box, Breadcrumbs, Chip, Collapse, emphasize, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, styled, TextField, Typography } from "@mui/material";
+import { Alert, Box, Breadcrumbs, Chip, Collapse, emphasize, Modal, Slide, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, styled, TextField, Typography } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,7 +22,6 @@ import Link2 from '@mui/material/Link';
 import Loading from "@/components/Loading/Loading"
 import { Description } from "@mui/icons-material"
 import { fetchData } from "next-auth/client/_utils"
-import ModalAddWorkout from "@/components/ModalAddWorkout/ModalAddWorkout"
 
 
 metadata.pageTitle = "Treinos"
@@ -40,20 +39,27 @@ const actions = [
 export default function workout() {
     const { data: session, status, update } = useSession()
     const sectionId = (session as Session)?.id;
-
     const router = useRouter();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
-    const pathname = usePathname();
+    //Modal de cadastro
+    const [openAddModal, setOpenAddModal] = React.useState(false);
+    const OpenAddModal = () => setOpenAddModal(true);
+    const CloseAddModal = () => setOpenAddModal(false);
 
+    //Abrir e fechar slider e alert
+    type Severity = "error" | "success" | "info" | "warning" | undefined;
+    const [openOrCloseSlider, setOpenOrCloseSlider] = useState(false);
+    const [alertType, setAlertType] = useState<Severity>(undefined);
+    const [alertText, setAlertText] = useState<string>("");
+
+
+    //Formulario de cadastro
     const [workoutName, setWorkoutName] = useState<string>();
     const [workoutDescription, setWorkoutDescription] = useState<string>();
 
     function actionBtn(func: string) {
         if (func == "Add") {
-            handleOpen();
+            OpenAddModal();
         }
     }
     const handleNavigation = (id: number) => {
@@ -66,13 +72,33 @@ export default function workout() {
             name: workoutName,
             description: workoutDescription
         }
-        handleClose();
-        if (sectionId !== undefined) {
-            return useWorkoutService().addWorkoutToUser(workout, sectionId)
+        CloseAddModal();
+        try{
+            if (sectionId !== undefined) {
+                const response = await useWorkoutService().addWorkoutToUser(workout, sectionId)
+                
+                if(response?.status === 200){
+                    setOpenOrCloseSlider(true)
+                    setAlertType("success")
+                    setAlertText("Treino criado com sucesso")
+                    return response
+                }
+                else{
+                    setOpenOrCloseSlider(true)
+                    setAlertType("error")
+                    setAlertText("Ocorreu um erro ao criar o treino")
+                    return response
+                }
+                
+            }
+            else {
+                console.log("Erro ao adicionar treino não foi localizado o id")
+            }
         }
-        else {
-            console.log("Erro ao adicionar treino não foi localizado o id")
+        catch{
+
         }
+        
 
     }
 
@@ -85,10 +111,12 @@ export default function workout() {
                     if (sectionId !== undefined) {
                         const response = await useWorkoutService().findWorkoutByIdUser(sectionId);
                         setData(response);
+                        
                     }
                     else {
                         console.log("Não foi localizado o Id de usuario")
                     }
+                    
                 }
                 catch (error) {
                     console.error('Erro ao buscar dados', error);
@@ -112,55 +140,44 @@ export default function workout() {
                 </Link2>
                 <Typography color="text.primary">Belts</Typography>
             </Breadcrumbs>
-            
-            {/* <Modal
-                open={open}
-                onClose={handleClose}
+
+            <Modal
+
+                open={openAddModal}
+                onClose={CloseAddModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <form onSubmit={handleAddNewWorkout}>
-                    <div className=" flex items-center justify-center overflow-y-auto">
-                        <div className="flex min-h-full w-full items-end justify-center p-4 text-center sm:items-center">
-                            <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                    <Box
-                                        component="form"
-                                        sx={{
-                                            '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                        }}
-                                        noValidate
-                                        autoComplete="off"
-                                    >
-                                        <h2 className='text-xl mb-5 font-bold'>Adicionar novo treino</h2>
-                                        <div className="flex">
-                                            <TextField
-                                                required
-                                                onChange={(e) => setWorkoutName(e.target.value)}
-                                                id="outlined-required"
-                                                label="Nome do Treino"
-                                                defaultValue=""
-                                            />
-                                            <TextField
-                                                id="outlined-required"
-                                                onChange={(e) => setWorkoutDescription(e.target.value)}
-                                                label="Descrição"
-                                                defaultValue=""
-                                            /></div>
-                                    </Box>
-                                </div>
-                                <div className="flex justify-center bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                    <Button type="submit" variant="contained">Adicionar</Button>
-                                </div>
-                            </div>
+                <form className="absolute w-80 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" onSubmit={handleAddNewWorkout}>
+
+                    <div className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div className="bg-white  w-full px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <h2 className='text-xl text-center mb-5 font-bold'>Adicionar novo treino</h2>
+                            <div className="flex gap-2">
+                                <TextField
+                                    required
+                                    onChange={(e) => setWorkoutName(e.target.value)}
+                                    id="outlined-required"
+                                    label="Nome do Treino"
+                                />
+                                <TextField
+                                    id="outlined-required"
+                                    onChange={(e) => setWorkoutDescription(e.target.value)}
+                                    label="Descrição"
+                                /></div>
+
                         </div>
+                        <div className="flex justify-center bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <Button  type="submit" variant="contained">Adicionar</Button>
+                        </div>
+
                     </div>
                 </form>
             </Modal>
-            */}
-            <ModalAddWorkout openOrCLose={open}></ModalAddWorkout>
+
+
             <section className="h-auto">
-                
+
                 <ul role="list" className="divide-y  divide-gray-100">
                     {data.map((res, index) => (
                         <div key={index}>
@@ -180,7 +197,10 @@ export default function workout() {
                                     <p className="text-xs text-gray-900">Data de criação</p>
                                     <p className="text-sm leading-5 text-gray-900"></p>
                                     {res.id !== undefined && res.id !== null && (
-                                        <Button onClick={() => handleNavigation(res.id as number)} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
+                                        <Button onClick={() => {
+                                            handleNavigation(res.id as number)
+                                            
+                                        }} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
                                     )}
                                 </div>
                             </li>
@@ -204,6 +224,18 @@ export default function workout() {
                     ))}
                 </SpeedDial>
             </div>
+            <div className="flex justify-center">
+                <Slide direction="up" in={openOrCloseSlider} mountOnEnter unmountOnExit>
+                    <Alert className="fixed bottom-32" severity={alertType} onClose={() =>setOpenOrCloseSlider(false)}>
+                        {alertText}
+                    </Alert>
+                </Slide>
+
+            </div>
+
+
+
+
             <Footer></Footer>
         </main>
     )

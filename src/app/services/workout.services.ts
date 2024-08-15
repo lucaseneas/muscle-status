@@ -26,11 +26,12 @@ export const useWorkoutService = () => {
     const addWorkoutToUser = async (workout: Workout, idUser: number) => {
         try {
             const response = await httpClient.post(`${url}/user/${idUser}`,workout)
-            return response.status >= 200 && response.status < 300;
+            console.log(response)
+            return response;
           }
           catch (error) {
             console.error("Erro ao criar o treino:", error);
-            return false;
+            return error;
           }
     }
    

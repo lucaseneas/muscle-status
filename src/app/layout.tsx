@@ -23,7 +23,7 @@ export default function RootLayout({
         <meta name="title" content={metadata.title} />
         <meta name="description" content={metadata.description} />
       </head>
-      <body className={`${inter.className} h-screen`}>
+      <body className={`${inter.className} bg-fixed`}>
         <SessionProvider>
           <Base children={children}></Base>
         </SessionProvider>
