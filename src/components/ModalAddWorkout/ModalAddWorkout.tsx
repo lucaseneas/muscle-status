@@ -28,7 +28,6 @@ export function ModalAddWorkout({ state, setState, sectionId }: ModalAddWorkout)
             description: workoutDescription
         }
         setState(false);
-
         if (sectionId !== undefined) {
             const response = await useWorkoutService().addWorkoutToUser(workout, sectionId)
 

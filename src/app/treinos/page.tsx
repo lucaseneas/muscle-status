@@ -101,7 +101,7 @@ export default function workout() {
             </Breadcrumbs>
 
             <ModalAddWorkout state={openAddModal} setState={setOpenAddModal} sectionId={sectionId}></ModalAddWorkout>
-            <ModalEditWorkout state={openEditModal} setState={setOpenEditModal} data={data}></ModalEditWorkout>
+            <ModalEditWorkout state={openEditModal} setState={setOpenEditModal} data={data} sectionId={sectionId}></ModalEditWorkout>
 
 
             <section className="h-auto">

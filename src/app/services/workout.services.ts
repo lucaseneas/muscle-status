@@ -34,6 +34,18 @@ export const useWorkoutService = () => {
             return error;
           }
     }
+
+    const updateWorkout = async (workout: Workout, workoutId: number) => {
+      try{
+        const response = await httpClient.put(`${url}/${workoutId}`,workout)
+        return response;
+      }
+      catch (error){
+        console.error("Erro ao atualizar o treino:", error)
+        return error;
+      }
+    }
+
    
-    return { create , findWorkoutByIdUser, addWorkoutToUser};
+    return { create , findWorkoutByIdUser, addWorkoutToUser, updateWorkout};
 }
