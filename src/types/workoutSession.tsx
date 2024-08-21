@@ -1,5 +1,5 @@
 export interface WorkoutSession {
-    id: any;
+    id?: any;
     name : string,
     description : string
 }

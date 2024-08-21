@@ -1,13 +1,14 @@
 "use client"
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
-import Link from "next/link";
-import { Card, Paper } from "@mui/material";
+import { Breadcrumbs, Card, Link, Paper, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { WorkoutSession } from "@/types/workoutSession";
 import { useWorkoutSessionService } from "@/app/services/workoutSession.service";
 import { useRouter } from "next/navigation";
 import { metadata } from "@/app/metadata";
+import AddEditRemoveBtn from "@/components/AddEditRemoveBtn/AddEditRemoveBtn";
+import ModalAddWorkoutSession from "@/components/ModalWorkoutSession/ModalAddWorkoutSession/ModalAddWorkoutSession";
 
 
 export default function workoutSession({ params }: { params: { idTreino: number } }) {
@@ -29,10 +30,26 @@ export default function workoutSession({ params }: { params: { idTreino: number 
         fetchData();
     }, []);
 
+    //Modal de cadastro
+    const [openAddModal, setOpenAddModal] = useState(false);
+
+    //Modal de editar
+    const [openEditModal, setOpenEditModal] = useState(false);
+
+    //Modal de remover
+    const [openRemoveModal, setOpenRemoveModal] = useState(false);
+    
+
 
     return (
         <main className="h-screen">
-           
+            <Breadcrumbs className="flex items-center justify-center" aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/treinos">
+                    Treinos
+                </Link>
+                <Typography color="text.primary">Sessões</Typography>
+            </Breadcrumbs>
+            <ModalAddWorkoutSession state={openAddModal} setState={setOpenAddModal}></ModalAddWorkoutSession>
             <div className="grid grid-cols-3" >
                 {data.map((res, index1) => (
                     <div key={index1}>
@@ -47,8 +64,7 @@ export default function workoutSession({ params }: { params: { idTreino: number 
                 ))
                 }
             </div>
-
-            <Footer></Footer>
+            <AddEditRemoveBtn setOpenAddModal={setOpenAddModal} setOpenEditModal={setOpenEditModal} setOpenRemoveModal={setOpenRemoveModal}></AddEditRemoveBtn>
         </main>
     )
 }

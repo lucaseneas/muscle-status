@@ -1,0 +1,1 @@
+export type SlideSeverity = "error" | "success" | "info" | "warning" | undefined;

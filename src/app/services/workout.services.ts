@@ -17,7 +17,6 @@ export const useWorkoutService = () => {
         return response.data;
     };
 
-    //const findWorkoutByIdUser = async (): Promise<Workout[]> => {
     const findWorkoutByIdUser = async (id : number) => {
         const response: AxiosResponse<Workout[]> = await httpClient.get<Workout[]>(`${url}/user/${id}`);
         return response.data;
@@ -46,6 +45,17 @@ export const useWorkoutService = () => {
       }
     }
 
+    const deleteWorkout = async (workoutId:number) => {
+      try{
+        const response = await httpClient.delete(`${url}/${workoutId}`);
+        return response;
+      }
+      catch (error){
+        console.error("Erro ao deletar o treino:", error)
+        return error;
+      }
+    }
+
    
-    return { create , findWorkoutByIdUser, addWorkoutToUser, updateWorkout};
+    return { create , findWorkoutByIdUser, addWorkoutToUser, updateWorkout, deleteWorkout};
 }

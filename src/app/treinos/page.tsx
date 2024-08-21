@@ -22,8 +22,9 @@ import Link2 from '@mui/material/Link';
 import Loading from "@/components/Loading/Loading"
 import { Description } from "@mui/icons-material"
 import { fetchData } from "next-auth/client/_utils"
-import ModalEditWorkout from "@/components/ModalEditWorkout/ModalEditWorkout"
-import { ModalAddWorkout } from "@/components/ModalAddWorkout/ModalAddWorkout"
+import ModalEditWorkout from "@/components/ModalWorkout/ModalEditWorkout/ModalEditWorkout"
+import { ModalAddWorkout } from "@/components/ModalWorkout/ModalAddWorkout/ModalAddWorkout"
+import ModalRemoveWorkout from "@/components/ModalWorkout/ModalRemoveWorkout/ModalRemoveWorkout"
 
 
 metadata.pageTitle = "Treinos"
@@ -45,22 +46,23 @@ export default function workout() {
 
     //Modal de cadastro
     const [openAddModal, setOpenAddModal] = useState(false);
-    const OpenAddModal = () => setOpenAddModal(true);
-    const CloseAddModal = () => setOpenAddModal(false);
 
     //Modal de editar
     const [openEditModal, setOpenEditModal] = useState(false);
 
+    //Modal de remover
+    const [openRemoveModal, setOpenRemoveModal] = useState(false);
 
     function actionBtn(func: string) {
         if (func == "Add") {
-            OpenAddModal();
+            setOpenAddModal(true);
         }
         if (func == "Edit") {
-            console.log(openEditModal);
             setOpenEditModal(true);
         }
-
+        if (func == "Remove"){
+            setOpenRemoveModal(true);
+        }
     }
     const handleNavigation = (id: number) => {
         router.push(`./treinos/${id}`);
@@ -97,12 +99,12 @@ export default function workout() {
     return (
         <main title="Treinos" className="h-screen">
             <Breadcrumbs className="flex items-center justify-center" aria-label="breadcrumb">
-                <Typography color="text.primary">Home</Typography>
+                <Typography color="text.primary">Treinos</Typography>
             </Breadcrumbs>
 
             <ModalAddWorkout state={openAddModal} setState={setOpenAddModal} sectionId={sectionId}></ModalAddWorkout>
             <ModalEditWorkout state={openEditModal} setState={setOpenEditModal} data={data} sectionId={sectionId}></ModalEditWorkout>
-
+            <ModalRemoveWorkout state={openRemoveModal} setState={setOpenRemoveModal} data={data} ></ModalRemoveWorkout>
 
             <section className="h-auto">
 
@@ -152,8 +154,6 @@ export default function workout() {
                     ))}
                 </SpeedDial>
             </div>
-
-            <Footer></Footer>
         </main>
     )
 }

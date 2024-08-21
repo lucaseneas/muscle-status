@@ -23,6 +23,7 @@ export function ModalAddWorkout({ state, setState, sectionId }: ModalAddWorkout)
     //Adicionar novo treino
     const handleAddNewWorkout = async (e: FormEvent) => {
         e.preventDefault();
+        
         const workout = {
             name: workoutName,
             description: workoutDescription
@@ -64,14 +65,16 @@ export function ModalAddWorkout({ state, setState, sectionId }: ModalAddWorkout)
                     <div className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                         <div className="bg-white  w-full px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <h2 className='text-xl text-center mb-5 font-bold'>Adicionar novo treino</h2>
-                            <div className="flex gap-2">
+                            <div className=" gap-2">
                                 <TextField
+                                    className="w-full mb-6"
                                     required
                                     onChange={(e) => setWorkoutName(e.target.value)}
                                     id="outlined-required"
                                     label="Nome do Treino"
                                 />
                                 <TextField
+                                className="w-full"
                                     id="outlined-required"
                                     onChange={(e) => setWorkoutDescription(e.target.value)}
                                     label="Descrição"
