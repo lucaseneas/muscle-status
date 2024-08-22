@@ -17,5 +17,38 @@ export const useWorkoutSessionService = () => {
         return response.data;
       };
 
-    return { findWorkoutSessionByWorkoutId};
+    const createWorkoutSession = async (idWorkout:number,workoutSession:WorkoutSession) => {
+      try{
+        const response = await httpClient.post(`${url}/${idWorkout}`,workoutSession);
+        return response;
+      }
+      catch(error){
+        console.error("Não foi possivel criar uma Sessão de Treino", error);
+        return error;
+      }
+    }
+
+    const updateWorkoutSession = async (idWorkoutSession: number, workoutSession:WorkoutSession) => {
+      try{
+        const response = await httpClient.put(`${url}/${idWorkoutSession}`,workoutSession)
+        return response;
+      }
+      catch(error){
+        console.error("Não foi possivel criar uma Sessão de Treino", error)
+        return error;
+      }
+    }
+
+    const removeWorkoutSession = async (idWorkoutSession:number) => {
+      try{
+        const response = await httpClient.delete(`${url}/${idWorkoutSession}`);
+        return response;
+      }
+      catch(error){
+        console.error("Não foi possivel remover uma Sessão de Treino", error);
+        return error;
+      }
+    }
+
+    return { findWorkoutSessionByWorkoutId,createWorkoutSession,updateWorkoutSession,removeWorkoutSession};
 }

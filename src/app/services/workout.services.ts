@@ -25,7 +25,6 @@ export const useWorkoutService = () => {
     const addWorkoutToUser = async (workout: Workout, idUser: number) => {
         try {
             const response = await httpClient.post(`${url}/user/${idUser}`,workout)
-            console.log(response)
             return response;
           }
           catch (error) {

@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 import { metadata } from "@/app/metadata";
 import AddEditRemoveBtn from "@/components/AddEditRemoveBtn/AddEditRemoveBtn";
 import ModalAddWorkoutSession from "@/components/ModalWorkoutSession/ModalAddWorkoutSession/ModalAddWorkoutSession";
+import ModalEditWorkoutSession from "@/components/ModalWorkoutSession/ModalEditWorkoutSession/ModalEditWorkoutSession";
+import ModalRemoveWorkoutSession from "@/components/ModalWorkoutSession/ModalRemoveWorkoutSession/ModalRemoveWorkoutSession";
 
 
-export default function workoutSession({ params }: { params: { idTreino: number } }) {
+export default function workoutSession({ params }: { params: { idWorkout: number } }) {
 
     const router = useRouter();
 
@@ -20,7 +22,7 @@ export default function workoutSession({ params }: { params: { idTreino: number 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await useWorkoutSessionService().findWorkoutSessionByWorkoutId(params.idTreino);
+                const response = await useWorkoutSessionService().findWorkoutSessionByWorkoutId(params.idWorkout);
                 setData(response);
             }
             catch (error) {
@@ -38,7 +40,7 @@ export default function workoutSession({ params }: { params: { idTreino: number 
 
     //Modal de remover
     const [openRemoveModal, setOpenRemoveModal] = useState(false);
-    
+
 
 
     return (
@@ -49,7 +51,9 @@ export default function workoutSession({ params }: { params: { idTreino: number 
                 </Link>
                 <Typography color="text.primary">Sessões</Typography>
             </Breadcrumbs>
-            <ModalAddWorkoutSession state={openAddModal} setState={setOpenAddModal}></ModalAddWorkoutSession>
+            <ModalAddWorkoutSession state={openAddModal} setState={setOpenAddModal} idWorkout={params.idWorkout} ></ModalAddWorkoutSession>
+            <ModalEditWorkoutSession state={openEditModal} setState={setOpenEditModal} data={data} WorkoutSessionId={params.idWorkout}></ModalEditWorkoutSession>
+            <ModalRemoveWorkoutSession state={openRemoveModal} setState={setOpenRemoveModal} data={data}></ModalRemoveWorkoutSession>
             <div className="grid grid-cols-3" >
                 {data.map((res, index1) => (
                     <div key={index1}>

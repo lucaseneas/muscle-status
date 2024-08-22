@@ -1,34 +1,34 @@
-import { useWorkoutService } from "@/app/services/workout.services";
-import { Workout } from "@/types/workout";
-import { Button, MenuItem, Modal, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { FormEvent, useState } from "react";
-import SlideAlert from "../../SlideAlert/SlideAlert";
-import { SlideSeverity } from "@/types/slideSeverity";
+import { useWorkoutSessionService } from "@/app/services/workoutSession.service"
+import SlideAlert from "@/components/SlideAlert/SlideAlert"
+import { SlideSeverity } from "@/types/slideSeverity"
+import { WorkoutSession } from "@/types/workoutSession"
+import { Button, MenuItem, Modal, Select, SelectChangeEvent, TextField } from "@mui/material"
+import { FormEvent, useState } from "react"
 
-type ModalRemoveWorkoutProps = {
+type ModalRemoveWorkoutSessionProps = {
     state: boolean
     setState: any
-    data: Workout[]
+    data: WorkoutSession[]
 }
 
-export default function ModalRemoveWorkout({ state, setState, data }: ModalRemoveWorkoutProps) {
-
+export default function ModalRemoveWorkoutSession({ state, setState, data }: ModalRemoveWorkoutSessionProps){
+    
     const closeModal = () => {
         setState(false);
     }
     //Remove o Treino
-    const removeWorkout = async (e:FormEvent) =>{
+    const removeWorkoutSession = async (e:FormEvent) =>{
         e.preventDefault();
-        const response = await useWorkoutService().deleteWorkout(workout.id);
+        const response = await useWorkoutSessionService().removeWorkoutSession(workoutSession.id);
         if((response as Response).status === 200){
             setOpenOrCloseSlider(true);
             setAlertType("success");
-            setAlertText("Treino removido com sucesso !")
+            setAlertText("Sessão de treino removida com sucesso !")
         }
         else{
             setOpenOrCloseSlider(true);
             setAlertType("error");
-            setAlertText("Ocorreu um erro ao remover o treino")
+            setAlertText("Ocorreu um erro ao remover a sessão de treino")
         }
         closeModal();
         
@@ -41,11 +41,11 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
 
 
     //Configurações do Select
-    const [workout, setWorkout] = useState<Workout | any>();
+    const [workoutSession, setworkoutSession] = useState<WorkoutSession | any>();
     const handleChange = (event: SelectChangeEvent) => {
         const selectedId = Number(event.target.value);
-        const selectedWorkout = data.find(workout => workout.id === selectedId);
-        setWorkout(selectedWorkout);
+        const selectedWorkoutSession = data.find(workoutSession => workoutSession.id === selectedId);
+        setworkoutSession(selectedWorkoutSession);
         const divSelect = document.querySelector("#select");
         const divTextField = document.querySelector("#textFields");
         const btnTextField = document.querySelector("#btnTextField");
@@ -63,7 +63,7 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <form className="absolute w-80 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" onSubmit={removeWorkout}>
+                <form className="absolute w-80 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" onSubmit={removeWorkoutSession}>
                     <div className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                         <div className="bg-white  w-full px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <h2 className='text-xl text-center mb-5 font-bold'>Remover treino</h2>
@@ -71,7 +71,7 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
                                 <div id="select">
                                     <Select
                                         className="w-full"
-                                        value={workout}
+                                        value={workoutSession}
                                         onChange={handleChange}
                                         displayEmpty
                                         inputProps={{ 'aria-label': 'Without label' }}
@@ -97,7 +97,7 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
                                         className="w-full mb-6"
                                         id="standard-read-only-input"
                                         label="Nome"
-                                        defaultValue={workout?.name}
+                                        defaultValue={workoutSession?.name}
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -107,7 +107,7 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
                                         className="w-full"
                                         id="standard-read-only-input"
                                         label="Descrição"
-                                        defaultValue={workout?.description}
+                                        defaultValue={workoutSession?.description}
                                         InputProps={{
                                             readOnly: true,
                                         }}
