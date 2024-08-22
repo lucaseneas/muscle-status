@@ -68,8 +68,8 @@ export default function ModalEditWorkoutSession({ state, setState, data, Workout
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedId = Number(event.target.value);
-        const selectedWorkout = data.find(workout => workout.id === selectedId);
-        setworkoutSession(selectedWorkout);
+        const selectedWorkoutSession = data.find(workoutSession => workoutSession.id === selectedId);
+        setworkoutSession(selectedWorkoutSession);
         const divSelect = document.querySelector("#select");
         const divTextField = document.querySelector("#textFields");
         const btnTextField = document.querySelector("#btnTextField");

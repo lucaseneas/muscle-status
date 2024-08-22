@@ -21,10 +21,8 @@ export default function ModalAddWorkoutSession({ state, setState, idWorkout}: Mo
     const [workoutSessionName, setWorkoutSessionName] = useState<string>("");
     const [workoutSessionDescription, setWorkoutSessionDescription] = useState<string>("");
 
-
-
-    //Adicionar novo treino
-    const handleAddNewWorkout = async (e: FormEvent) => {
+    //Adicionar nova sessão treino
+    const addNewWorkoutSession = async (e: FormEvent) => {
         e.preventDefault();
 
         const workoutSession = {
@@ -61,7 +59,7 @@ export default function ModalAddWorkoutSession({ state, setState, idWorkout}: Mo
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <form className="absolute w-80 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" onSubmit={handleAddNewWorkout}>
+                <form className="absolute w-80 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" onSubmit={addNewWorkoutSession}>
 
                     <div className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                         <div className="bg-white  w-full px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
