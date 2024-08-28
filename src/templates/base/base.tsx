@@ -27,9 +27,7 @@ export const Base = ({ children }: Props) => {
             router.push("/login")
         }
         if (status === "authenticated") {
-
             console.log("redirect")
-            router.push("/treinos")
         }
       
     }, [status, router]);

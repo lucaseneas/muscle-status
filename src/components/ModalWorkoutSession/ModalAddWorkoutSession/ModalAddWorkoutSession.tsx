@@ -1,5 +1,4 @@
 import { useWorkoutSessionService } from "@/app/services/workoutSession.service";
-import { WorkoutSession } from "@/types/workoutSession";
 import { Alert, Button, Modal, Slide, TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 
