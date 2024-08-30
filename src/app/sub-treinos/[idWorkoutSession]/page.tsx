@@ -6,7 +6,7 @@ import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Avatar, Box, Button, Fab, Modal, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Fab, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField, Typography } from "@mui/material";
 
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
@@ -23,19 +23,39 @@ import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { WorkoutSessionExercise } from "@/types/workoutSessionExercise";
 import { FormEvent, useEffect, useState } from "react";
-import { useWorkoutSessionExerciseService } from "@/app/services/workoutSessionExercise.serivce";
+import { useWorkoutSessionExerciseService } from "@/app/services/workoutSessionExercise.service";
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { ModalAddWorkoutSessionExercise } from "@/components/ModalWorkoutSessionExercise/ModalAddWorkoutSessionExercise/ModalAddWorkoutSessionExercise";
 
 
 
-
-export default function workNumber({ params, }: { params: { idTreino2: number }; }) {
+export default function workNumber({ params, }: { params: { idWorkoutSession: number }; }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const [weight, setWeight] = useState<number>();
     const [repetition, setRepetition] = useState<number>();
-    
+
+    const actions = [
+        { icon: <AddIcon />, name: 'Add' },
+        { icon: <EditIcon />, name: 'Edit' },
+        { icon: <DeleteIcon />, name: 'Remove' },
+    ];
+    function actionBtn(func: string) {
+        if (func == "Add") {
+            setOpenAddModal(true)
+        }
+        if (func == "Edit") {
+            
+        }
+        if (func == "Remove"){
+            
+        }
+    }
+
     const createLog = async (e: FormEvent) => {
         e.preventDefault();
         const resp = await signIn('credentials', {
@@ -60,7 +80,7 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await useWorkoutSessionExerciseService().findWorkoutSessionExerciseByWorkoutSession(params.idTreino2);
+                const response = await useWorkoutSessionExerciseService().findWorkoutSessionExerciseByWorkoutSession(params.idWorkoutSession);
                 setData(response);
             }
             catch (error) {
@@ -71,8 +91,12 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
     }, []);
 
 
+    //Modal de cadastro
+    const [openAddModal, setOpenAddModal] = useState(false);
+
     return (
         <main className=" h-full">
+            <ModalAddWorkoutSessionExercise state={openAddModal} setState={setOpenAddModal} idWorkoutSession={params.idWorkoutSession}></ModalAddWorkoutSessionExercise>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -155,7 +179,6 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
                                 aria-controls="panel1-content"
                                 id="panel1-header"
                             >
-
                                 <div className="flex items-center gap-5">
                                     <Avatar>
                                         H
@@ -168,8 +191,6 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
                                 <div className="flex mb-4">
                                     <div className="w-3/4">
                                         <h6 className="text-xs">Obs.: DESCRIÇÃO</h6>
-
-                                        <>
                                             <div className="flex gap-4 my-2">
 
                                                 <h2>Série </h2>
@@ -193,8 +214,6 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
                                                  />
                                             </div>
                                             <h3 className="text-xs">Ultima mudança em DATA</h3>
-                                        </>
-
                                     </div>
 
                                     <div className="flex gap-4 pr-2 flex-col w-1/4 justify-center items-end">
@@ -226,6 +245,22 @@ export default function workNumber({ params, }: { params: { idTreino2: number };
             </section>
 
             <Footer></Footer>
+            <div className="fixed right-4 bottom-28">
+                <SpeedDial
+                    ariaLabel="SpeedDial basic example"
+                    sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                    icon={<SpeedDialIcon />}
+                >
+                    {actions.map((action) => (
+                        <SpeedDialAction
+                            key={action.name}
+                            icon={action.icon}
+                            tooltipTitle={action.name}
+                            onClick={() => actionBtn(action.name)}>
+                        </SpeedDialAction>
+                    ))}
+                </SpeedDial>
+            </div>
         </main >
     )
 }

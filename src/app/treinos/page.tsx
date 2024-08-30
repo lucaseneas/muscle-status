@@ -98,10 +98,6 @@ export default function workout() {
 
     return (
         <main title="Treinos" className="h-screen">
-            <Breadcrumbs className="flex items-center justify-center" aria-label="breadcrumb">
-                <Typography color="text.primary">Treinos</Typography>
-            </Breadcrumbs>
-
             <ModalAddWorkout state={openAddModal} setState={setOpenAddModal} sectionId={sectionId}></ModalAddWorkout>
             <ModalEditWorkout state={openEditModal} setState={setOpenEditModal} data={data} sectionId={sectionId}></ModalEditWorkout>
             <ModalRemoveWorkout state={openRemoveModal} setState={setOpenRemoveModal} data={data} ></ModalRemoveWorkout>
@@ -130,7 +126,7 @@ export default function workout() {
                                         <Button onClick={() => {
                                             handleNavigation(res.id as number)
 
-                                        }} className='!bg-secondary' size="medium" variant="contained">Ver</Button>
+                                        }}  size="medium" variant="contained">Ver</Button>
                                     )}
                                 </div>
                             </li>

@@ -20,16 +20,15 @@ export const useWorkoutSessionExerciseService = () => {
 
 //TESTAR ISSO
   const addWorkoutSessionExercise = async (idWorkoutSession: number, idExercise: number) => {
-    try {
-      const response = await axios.post(`/workout-session/${idWorkoutSession}/exercise/${idExercise}`)
-      return response.status >= 200 && response.status < 300;
+    try{
+      const response = await httpClient.post(`${url}/workout-session/${idWorkoutSession}/exercise/${idExercise}`);
+      return response;
     }
-    catch (error) {
-      console.error("Erro ao adicionar exercício à sessão:", error);
-      return false;
+    catch(error){
+      console.error("Não foi possivel inserir um exercicio no treino", error);
+      return error;
     }
-
   }
 
-  return { findWorkoutSessionExerciseByWorkoutSession };
+  return { findWorkoutSessionExerciseByWorkoutSession,addWorkoutSessionExercise };
 }

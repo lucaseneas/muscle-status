@@ -45,12 +45,7 @@ export default function workoutSession({ params }: { params: { idWorkout: number
 
     return (
         <main className="h-screen">
-            <Breadcrumbs className="flex items-center justify-center" aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/treinos">
-                    Treinos
-                </Link>
-                <Typography color="text.primary">Sessões</Typography>
-            </Breadcrumbs>
+
             <ModalAddWorkoutSession state={openAddModal} setState={setOpenAddModal} idWorkout={params.idWorkout} ></ModalAddWorkoutSession>
             <ModalEditWorkoutSession state={openEditModal} setState={setOpenEditModal} data={data} WorkoutSessionId={params.idWorkout}></ModalEditWorkoutSession>
             <ModalRemoveWorkoutSession state={openRemoveModal} setState={setOpenRemoveModal} data={data}></ModalRemoveWorkoutSession>
