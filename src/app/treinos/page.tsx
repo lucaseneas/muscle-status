@@ -97,11 +97,16 @@ export default function workout() {
 
 
     return (
-        <main title="Treinos" className="h-screen">
+        <main title="Treinos" className="">
             <ModalAddWorkout state={openAddModal} setState={setOpenAddModal} sectionId={sectionId}></ModalAddWorkout>
             <ModalEditWorkout state={openEditModal} setState={setOpenEditModal} data={data} sectionId={sectionId}></ModalEditWorkout>
             <ModalRemoveWorkout state={openRemoveModal} setState={setOpenRemoveModal} data={data} ></ModalRemoveWorkout>
-
+            <Breadcrumbs className="relative left-1/2 -translate-x-1/2 " aria-label="breadcrumb">
+                <Link2 underline="hover" color="inherit" href="/treinos">
+                    Treinos
+                </Link2>
+                <Typography color="text.primary">Sessões</Typography>
+            </Breadcrumbs>
             <section className="h-auto">
 
                 <ul role="list" className="divide-y  divide-gray-100">

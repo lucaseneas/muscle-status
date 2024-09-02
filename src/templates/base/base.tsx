@@ -29,7 +29,7 @@ export const Base = ({ children }: Props) => {
         if (status === "authenticated") {
             console.log("redirect")
         }
-      
+
     }, [status, router]);
 
 
@@ -40,14 +40,18 @@ export const Base = ({ children }: Props) => {
     }, [pathname]);
 
     return (
-        <>  
+        <>
+            <div className="h-screen">
                 {(status == "authenticated") ? (
                     <Header btnLeft={true} btnRight={true} name={metadata.pageTitle}></Header>
                 ) : null}
-                {children}
+                <div className=" h-full box-border overflow-y-auto">
+                    {children}
+                </div>
                 {(status == "authenticated") ? (
                     <Footer></Footer>
                 ) : null}
+            </div>
         </>
     )
 }

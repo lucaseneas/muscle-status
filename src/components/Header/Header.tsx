@@ -49,7 +49,7 @@ export default function Header({ name, btnLeft, btnRight }: HeaderProps) {
 
     return (
         <>
-            <AppBar className="!bg-primary" position="sticky">
+            <AppBar className="!bg-primary" position="sticky" sx={{ top: 0, buttom: 0 }} >
                 <Container maxWidth="xl">
                     <Toolbar className="flex justify-end" disableGutters>
                         <Image className="absolute left-1/2 -translate-x-1/2  " src={logo} height={50} alt={"logo"}></Image>
@@ -82,37 +82,10 @@ export default function Header({ name, btnLeft, btnRight }: HeaderProps) {
 
                                 </MenuItem>
                             ))}
-
                         </Menu>
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Breadcrumbs className="relative left-1/2 -translate-x-1/2 " aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/treinos">
-                    Treinos
-                </Link>
-                <Typography color="text.primary">Sessões</Typography>
-            </Breadcrumbs>
-            {/*
-        <div className="h-20"></div>
-            <header className=" w-screen bg-primary h-20 text-white z-20 fixed top-0 left-0 right-0 px-6">
-                <div className="h-full w-full relative flex items-center justify-center">
-
-                    {(btnLeft == true) ? (
-                        <button className=" flex items-center justify-center" onClick={router.back}>
-                            <img src='https://img.icons8.com/?size=100&id=15811&format=png&color=00C2CB' className=" h-10 absolute left-0 hover:brightness-150 bg-primary rounded-full"></img>
-                        </button>
-                    ) : null}
-                    <Image alt='logo' height={80} src={logo} />
-                    {(btnRight == true) ? (
-                        <IconButton className="!absolute right-0 hover:brightness-150" onClick={() => (signOut())} aria-label="delete">
-                            <ExitToAppIcon className='#001F2E'/>
-                        </IconButton>
-                    ) : null}
-                </div>
-            </header>
-        */}
-
         </>
     )
 }

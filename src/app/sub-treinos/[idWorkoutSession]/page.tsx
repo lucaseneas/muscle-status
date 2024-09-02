@@ -6,7 +6,7 @@ import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Avatar, Box, Button, Fab, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, ButtonGroup, Fab, IconButton, Modal, Paper, SpeedDial, SpeedDialAction, SpeedDialIcon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
@@ -26,6 +26,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useWorkoutSessionExerciseService } from "@/app/services/workoutSessionExercise.service";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalAddWorkoutSessionExercise } from "@/components/ModalWorkoutSessionExercise/ModalAddWorkoutSessionExercise/ModalAddWorkoutSessionExercise";
 
@@ -35,6 +36,7 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [count, setCount] = React.useState(1);
 
     const [weight, setWeight] = useState<number>();
     const [repetition, setRepetition] = useState<number>();
@@ -49,30 +51,30 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
             setOpenAddModal(true)
         }
         if (func == "Edit") {
-            
+
         }
-        if (func == "Remove"){
-            
+        if (func == "Remove") {
+
         }
     }
 
     const createLog = async (e: FormEvent) => {
         e.preventDefault();
         const resp = await signIn('credentials', {
-          redirect: false,
-          email: email,
-          password: password,
+            redirect: false,
+            email: email,
+            password: password,
         });
-    
+
         if (resp!.ok) {
-          router.push("./treinos")
-          localStorage.setItem("teste","teste");
+            router.push("./treinos")
+            localStorage.setItem("teste", "teste");
         }
         else {
-          const error = resp?.error;
-          setOpen(true)
+            const error = resp?.error;
+            setOpen(true)
         }
-      };
+    };
 
 
     //Consulta na API
@@ -95,7 +97,7 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
     const [openAddModal, setOpenAddModal] = useState(false);
 
     return (
-        <main className=" h-full">
+        <main className="">
             <ModalAddWorkoutSessionExercise state={openAddModal} setState={setOpenAddModal} idWorkoutSession={params.idWorkoutSession}></ModalAddWorkoutSessionExercise>
             <Modal
                 open={open}
@@ -173,69 +175,133 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
 
                 <form>
                     {data.map((res, index) => (
-                        <Accordion key={index}>
+                        <Accordion className="mx-2 bg-teal-50" key={index}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1-content"
                                 id="panel1-header"
                             >
-                                <div className="flex items-center gap-5">
-                                    <Avatar>
-                                        H
-                                    </Avatar>
-                                    {res.exercise.name}
+                                <div className="flex-col">
+                                    <div className="flex items-center gap-5">
+                                        <Avatar>
+                                            H
+                                        </Avatar>
+                                        {res.exercise.name}
+                                    </div>
+                                    <h6 className="text-xs mt-2">Obs.: Descrição do exercicio</h6>
                                 </div>
+
+
                             </AccordionSummary>
 
                             <AccordionDetails>
-                                <div className="flex mb-4">
-                                    <div className="w-3/4">
-                                        <h6 className="text-xs">Obs.: DESCRIÇÃO</h6>
-                                            <div className="flex gap-4 my-2">
+                                <div className="flex flex-col gap-4 ">
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{ minWidth: 300 }} aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell align="left">Série</TableCell>
+                                                    <TableCell align="left">Peso</TableCell>
+                                                    <TableCell align="left">Repetições</TableCell>
+                                                    <TableCell align="left">
+                                                    <IconButton color="primary" className=" rounded-full bg-primary hover:secondary">
+                                                            <SaveIcon />
+                                                    </IconButton>
+                                                    </TableCell>
 
-                                                <h2>Série </h2>
-                                                <input 
-                                                className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                                type="text" 
-                                                placeholder="Carga"
-                                                required
-                                                onChange={(e) => setWeight(e.target.value)}
-                                                />
-                                                <select className="shadow appearance-none border rounded w-10 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                                    <option value='0'>Kg</option>
-                                                    <option value='1'>Lbs</option>
-                                                    <option value='3'>P</option>
-                                                </select>
-                                                <input className="shadow appearance-none border rounded w-14 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                                type='number' 
-                                                placeholder="Rep"
-                                                required
-                                                onChange={(e) => setRepetition(e.target.value)}
-                                                 />
-                                            </div>
-                                            <h3 className="text-xs">Ultima mudança em DATA</h3>
-                                    </div>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow key="1">
+                                                    <TableCell align="left">
+                                                        <TextField
+                                                            sx={{ width: 40 }}
+                                                            id="outlined-number"
+                                                            label="Serie"
+                                                            type="number"
+                                                            variant="standard"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        <TextField
+                                                            sx={{ width: 80 }}
+                                                            id="outlined-number"
+                                                            label="Peso&nbsp;(Kg)"
+                                                            type="number"
+                                                            variant="standard"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        <TextField
+                                                            sx={{ width: 80 }}
+                                                            id="outlined-number"
+                                                            label="Repetições"
+                                                            type="number"
+                                                            variant="standard"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
 
-                                    <div className="flex gap-4 pr-2 flex-col w-1/4 justify-center items-end">
-                                        <Fab size='medium' color="primary" aria-label="add">
-                                            <ContentPasteIcon onClick={handleOpen} />
+                                    <TextField
+                                        id="outlined-multiline-static"
+                                        label="Observações"
+                                        fullWidth={true}
+                                        multiline
+                                        rows={2}
 
-                                        </Fab>
-                                        <Fab size='medium' color="primary" aria-label="edit">
-                                            <SaveIcon />
-                                        </Fab>
-                                    </div>
-
+                                    />
+                                    <h6 className="text-sm mt-2">Séries de hoje</h6>
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell align="left">Série</TableCell>
+                                                    <TableCell align="left">Peso</TableCell>
+                                                    <TableCell align="left">Repetições</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow key="1">
+                                                    <TableCell align="left">
+                                                        1
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        10
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        12
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow key="2">
+                                                    <TableCell align="left">
+                                                        2
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        10
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        12
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow key="3">
+                                                    <TableCell align="left">
+                                                        3
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        10
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        12
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <Button>Ver Anteriores</Button>
                                 </div>
-
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    label="Observações"
-                                    fullWidth={true}
-                                    multiline
-                                    rows={2}
-
-                                />
                             </AccordionDetails>
                         </Accordion>
                     ))}
@@ -244,7 +310,6 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
 
             </section>
 
-            <Footer></Footer>
             <div className="fixed right-4 bottom-28">
                 <SpeedDial
                     ariaLabel="SpeedDial basic example"
