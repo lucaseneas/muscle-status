@@ -29,6 +29,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalAddWorkoutSessionExercise } from "@/components/ModalWorkoutSessionExercise/ModalAddWorkoutSessionExercise/ModalAddWorkoutSessionExercise";
+import ModalEditWorkoutSessionExercise from "@/components/ModalWorkoutSessionExercise/ModalEditWorkoutSessionExercise/ModalEditWorkoutSessionExercise";
+import ModalRemoveWorkoutSessionExercise from "@/components/ModalWorkoutSessionExercise/ModalRemoveWorkoutSessionExercise/ModalRemoveWokoutSessionExercise";
 
 
 
@@ -43,18 +45,14 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
 
     const actions = [
         { icon: <AddIcon />, name: 'Add' },
-        { icon: <EditIcon />, name: 'Edit' },
         { icon: <DeleteIcon />, name: 'Remove' },
     ];
     function actionBtn(func: string) {
         if (func == "Add") {
             setOpenAddModal(true)
         }
-        if (func == "Edit") {
-
-        }
         if (func == "Remove") {
-
+            setRemoveModal(true)
         }
     }
 
@@ -95,10 +93,12 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
 
     //Modal de cadastro
     const [openAddModal, setOpenAddModal] = useState(false);
+    const [openRemoveModal, setRemoveModal] = useState(false);
 
     return (
         <main className="">
             <ModalAddWorkoutSessionExercise state={openAddModal} setState={setOpenAddModal} idWorkoutSession={params.idWorkoutSession}></ModalAddWorkoutSessionExercise>
+            <ModalRemoveWorkoutSessionExercise state={openRemoveModal} setState={setRemoveModal} data={data}></ModalRemoveWorkoutSessionExercise>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -175,7 +175,7 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
 
                 <form>
                     {data.map((res, index) => (
-                        <Accordion className="mx-2 bg-teal-50" key={index}>
+                        <Accordion className="mx-2 bg-gray-200" key={index}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1-content"
@@ -197,23 +197,21 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
                             <AccordionDetails>
                                 <div className="flex flex-col gap-4 ">
                                     <TableContainer component={Paper}>
-                                        <Table sx={{ minWidth: 300 }} aria-label="simple table">
+                                        <Table sx={{ minWidth: 280 }} size="small" aria-label="simple table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell align="left">Série</TableCell>
-                                                    <TableCell align="left">Peso</TableCell>
-                                                    <TableCell align="left">Repetições</TableCell>
-                                                    <TableCell align="left">
-                                                    <IconButton color="primary" className=" rounded-full bg-primary hover:secondary">
-                                                            <SaveIcon />
-                                                    </IconButton>
-                                                    </TableCell>
+                                                    <TableCell align="center">Série</TableCell>
+                                                    <TableCell align="center">Peso</TableCell>
+                                                    <TableCell align="center">Repetições</TableCell>
+
+
+
 
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <TableRow key="1">
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         <TextField
                                                             sx={{ width: 40 }}
                                                             id="outlined-number"
@@ -222,7 +220,7 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
                                                             variant="standard"
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         <TextField
                                                             sx={{ width: 80 }}
                                                             id="outlined-number"
@@ -231,9 +229,9 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
                                                             variant="standard"
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         <TextField
-                                                            sx={{ width: 80 }}
+                                                            sx={{ width: 90 }}
                                                             id="outlined-number"
                                                             label="Repetições"
                                                             type="number"
@@ -243,57 +241,61 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
                                                 </TableRow>
                                             </TableBody>
                                         </Table>
+                                        <TextField
+                                            id="outlined-multiline-static"
+                                            label="Observações"
+                                            fullWidth={true}
+                                            multiline
+                                            rows={1}
+
+                                        />
+                                        <IconButton color="primary" className=" rounded-full bg-primary hover:secondary">
+                                            <SaveIcon />
+                                        </IconButton>
                                     </TableContainer>
 
-                                    <TextField
-                                        id="outlined-multiline-static"
-                                        label="Observações"
-                                        fullWidth={true}
-                                        multiline
-                                        rows={2}
 
-                                    />
                                     <h6 className="text-sm mt-2">Séries de hoje</h6>
                                     <TableContainer component={Paper}>
                                         <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell align="left">Série</TableCell>
-                                                    <TableCell align="left">Peso</TableCell>
-                                                    <TableCell align="left">Repetições</TableCell>
+                                                    <TableCell align="center">Série</TableCell>
+                                                    <TableCell align="center">Peso</TableCell>
+                                                    <TableCell align="center">Repetições</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <TableRow key="1">
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         1
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         10
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         12
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow key="2">
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         2
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         10
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         12
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow key="3">
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         3
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         10
                                                     </TableCell>
-                                                    <TableCell align="left">
+                                                    <TableCell align="center">
                                                         12
                                                     </TableCell>
                                                 </TableRow>

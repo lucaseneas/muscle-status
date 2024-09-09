@@ -18,7 +18,6 @@ export const useWorkoutSessionExerciseService = () => {
     return response.data;
   };
 
-//TESTAR ISSO
   const addWorkoutSessionExercise = async (idWorkoutSession: number, idExercise: number) => {
     try{
       const response = await httpClient.post(`${url}/workout-session/${idWorkoutSession}/exercise/${idExercise}`);
@@ -30,5 +29,16 @@ export const useWorkoutSessionExerciseService = () => {
     }
   }
 
-  return { findWorkoutSessionExerciseByWorkoutSession,addWorkoutSessionExercise };
+  const removeWorkoutSessionExercise = async (idWorkoutSessionExercise: number) => {
+    try{
+      const response = await httpClient.delete(`${url}/${idWorkoutSessionExercise}`);
+      return response;
+    }
+    catch(error){
+      console.error("Não foi possivel remover o treino", error)
+      return error
+    }
+  }
+
+  return { findWorkoutSessionExerciseByWorkoutSession,addWorkoutSessionExercise,removeWorkoutSessionExercise };
 }
