@@ -31,6 +31,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalAddWorkoutSessionExercise } from "@/components/ModalWorkoutSessionExercise/ModalAddWorkoutSessionExercise/ModalAddWorkoutSessionExercise";
 import ModalEditWorkoutSessionExercise from "@/components/ModalWorkoutSessionExercise/ModalEditWorkoutSessionExercise/ModalEditWorkoutSessionExercise";
 import ModalRemoveWorkoutSessionExercise from "@/components/ModalWorkoutSessionExercise/ModalRemoveWorkoutSessionExercise/ModalRemoveWokoutSessionExercise";
+import ContainerExerciseLogs from "@/components/ContainerExerciseLogs/ContainerExerciseLogs";
+import { useSession } from "next-auth/react";
+import { Session } from "@/types/session";
+
 
 
 
@@ -38,10 +42,8 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [count, setCount] = React.useState(1);
-
-    const [weight, setWeight] = useState<number>();
-    const [repetition, setRepetition] = useState<number>();
+    
+    
 
     const actions = [
         { icon: <AddIcon />, name: 'Add' },
@@ -172,144 +174,15 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
             </Modal>
 
             <section className="my-2 h-full">
+                {data.map((res, index) => (
+                    <ContainerExerciseLogs 
+                    name={res.exercise.name} 
+                    index={index}
+                    idWorkoutSession={params.idWorkoutSession}
+                    >
 
-                <form>
-                    {data.map((res, index) => (
-                        <Accordion className="mx-2 bg-gray-200" key={index}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                            >
-                                <div className="flex-col">
-                                    <div className="flex items-center gap-5">
-                                        <Avatar>
-                                            H
-                                        </Avatar>
-                                        {res.exercise.name}
-                                    </div>
-                                    <h6 className="text-xs mt-2">Obs.: Descrição do exercicio</h6>
-                                </div>
-
-
-                            </AccordionSummary>
-
-                            <AccordionDetails>
-                                <div className="flex flex-col gap-4 ">
-                                    <TableContainer component={Paper}>
-                                        <Table sx={{ minWidth: 280 }} size="small" aria-label="simple table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell align="center">Série</TableCell>
-                                                    <TableCell align="center">Peso</TableCell>
-                                                    <TableCell align="center">Repetições</TableCell>
-
-
-
-
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow key="1">
-                                                    <TableCell align="center">
-                                                        <TextField
-                                                            sx={{ width: 40 }}
-                                                            id="outlined-number"
-                                                            label="Serie"
-                                                            type="number"
-                                                            variant="standard"
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        <TextField
-                                                            sx={{ width: 80 }}
-                                                            id="outlined-number"
-                                                            label="Peso&nbsp;(Kg)"
-                                                            type="number"
-                                                            variant="standard"
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        <TextField
-                                                            sx={{ width: 90 }}
-                                                            id="outlined-number"
-                                                            label="Repetições"
-                                                            type="number"
-                                                            variant="standard"
-                                                        />
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                        <TextField
-                                            id="outlined-multiline-static"
-                                            label="Observações"
-                                            fullWidth={true}
-                                            multiline
-                                            rows={1}
-
-                                        />
-                                        <IconButton color="primary" className=" rounded-full bg-primary hover:secondary">
-                                            <SaveIcon />
-                                        </IconButton>
-                                    </TableContainer>
-
-
-                                    <h6 className="text-sm mt-2">Séries de hoje</h6>
-                                    <TableContainer component={Paper}>
-                                        <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell align="center">Série</TableCell>
-                                                    <TableCell align="center">Peso</TableCell>
-                                                    <TableCell align="center">Repetições</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow key="1">
-                                                    <TableCell align="center">
-                                                        1
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        10
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        12
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow key="2">
-                                                    <TableCell align="center">
-                                                        2
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        10
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        12
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow key="3">
-                                                    <TableCell align="center">
-                                                        3
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        10
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        12
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                    <Button>Ver Anteriores</Button>
-                                </div>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
-                </form>
-
-
+                    </ContainerExerciseLogs>
+                ))}
             </section>
 
             <div className="fixed right-4 bottom-28">
