@@ -1,4 +1,5 @@
 import { useWorkoutSessionService } from "@/app/services/workoutSession.service";
+import SlideAlert from "@/components/SlideAlert/SlideAlert";
 import { Alert, Button, Modal, Slide, TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 
@@ -86,14 +87,7 @@ export default function ModalAddWorkoutSession({ state, setState, idWorkout}: Mo
                     </div>
                 </form>
             </Modal>
-            <div className="flex w-screen justify-center">
-                <Slide direction="up" in={openOrCloseSlider} mountOnEnter unmountOnExit>
-                    <Alert className="fixed bottom-32 z-50" severity={alertType} onClose={() => setOpenOrCloseSlider(false)}>
-                        {alertText}
-                    </Alert>
-                </Slide>
-
-            </div>
+            <SlideAlert open={openOrCloseSlider} setOpen={setOpenOrCloseSlider} alertType={alertType} alertText={alertText}></SlideAlert>
         </>
     )
 }

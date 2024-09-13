@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Avatar, Button, IconButton, Paper, Slide, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Exercise } from "@/types/exercise";
@@ -6,30 +6,71 @@ import { WorkoutSessionExercise } from "@/types/workoutSessionExercise";
 import { FormEvent, useState } from "react";
 import { Session } from "@/types/session";
 import { useSession } from "next-auth/react";
+import { ExerciseLog } from "@/types/exerciseLog";
+import { useExerciseLog } from "@/app/services/exerciseLog.services";
+import SlideAlert from "../SlideAlert/SlideAlert";
+import { SlideSeverity } from "@/types/slideSeverity";
 
 type ContainerExerciseLogsProps = {
     index: number
     name: string
-    idWorkoutSession:number
+    exerciseId:number
 }
 
 
 
 
-export default function ContainerExerciseLogs({ index, name,idWorkoutSession}: ContainerExerciseLogsProps) {
+export default function ContainerExerciseLogs({ index, name,exerciseId}: ContainerExerciseLogsProps) {
     const { data: session, status, update } = useSession()
-    const sectionId = (session as Session)?.id;
+    const sectionId = (session as Session | any)?.id;
 
     
-    const [exerciseLogSet, setExerciseLogSet] = useState("");
-    const [exerciseLogWeight,setExerciseLogWeight] = useState("");
-    const [exerciseLogRepetition,setExerciseLogRepetition] = useState("");
+    const [exerciseLogSet, setExerciseLogSet] = useState<number>(0);
+    const [exerciseLogWeight,setExerciseLogWeight] = useState<number>(0);
+    const [exerciseLogRepetition,setExerciseLogRepetition] = useState<number>(0);
+    const [exerciseLogDescription,setExerciseLogDescription] = useState<string>("");
+    
     const addExerciseLog = async (e: FormEvent) => {
         e.preventDefault();
+        const selectedExerciseLog:ExerciseLog = {
+            weight:exerciseLogWeight,
+            setNumber:exerciseLogSet,
+            repetition:exerciseLogRepetition,
+            description:exerciseLogDescription
+        }
+        console.log(selectedExerciseLog)
+        try{
+            const response = await useExerciseLog().create(sectionId,exerciseId,selectedExerciseLog)
+            if (response.status === 200) {
+                setOpenOrCloseSlider(true)
+                setAlertType("success")
+                setAlertText("Série cadastrada com sucesso")
+                return response
+                
+            }
+            else {
+                setOpenOrCloseSlider(true)
+                setAlertType("error")
+                setAlertText("Ocorreu um erro ao criar a série")
+                return response
+                
+            }
+        }
+        catch(error){
+            setOpenOrCloseSlider(true)
+            setAlertType("error")
+            setAlertText("Ocorreu um erro interno na criação")
+        }
+        
     }
 
+    //Abrir e fechar slider e alert
+    const [openOrCloseSlider, setOpenOrCloseSlider] = useState(false);
+    const [alertType, setAlertType] = useState<SlideSeverity>();
+    const [alertText, setAlertText] = useState<string>("");
+
     return (
-        <><form onSubmit={addExerciseLog}>
+        <>
             <Accordion className="mx-2 bg-gray-200" key={index}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -48,38 +89,43 @@ export default function ContainerExerciseLogs({ index, name,idWorkoutSession}: C
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="flex flex-col gap-4 ">
+                    <form onSubmit={addExerciseLog}>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 280 }} size="small" aria-label="simple table">
                                 <TableBody>
                                     <TableRow key="1">
                                         <TableCell align="center">
                                             <TextField
+                                                required
                                                 sx={{ width: 40 }}
                                                 id="outlined-number"
                                                 label="Serie"
                                                 type="number"
                                                 variant="standard"
-                                                onChange={(e)=> setExerciseLogSet(e.target.value)}
+                                                onChange={(e)=> setExerciseLogSet(+e.target.value)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <TextField
+                                                required
                                                 sx={{ width: 80 }}
                                                 id="outlined-number"
                                                 label="Peso&nbsp;(Kg)"
                                                 type="number"
                                                 variant="standard"
-                                                onChange={(e)=> setExerciseLogWeight(e.target.value)}
+                                                inputProps={{ step: "0.1" }} 
+                                                onChange={(e)=> setExerciseLogWeight(+e.target.value)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <TextField
+                                                required
                                                 sx={{ width: 90 }}
                                                 id="outlined-number"
                                                 label="Repetições"
                                                 type="number"
                                                 variant="standard"
-                                                onChange={(e)=> setExerciseLogRepetition(e.target.value)}
+                                                onChange={(e)=> setExerciseLogRepetition(+e.target.value)}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -93,6 +139,7 @@ export default function ContainerExerciseLogs({ index, name,idWorkoutSession}: C
                                     fullWidth={true}
                                     multiline
                                     rows={1}
+                                    onChange={(e)=> setExerciseLogDescription(e.target.value)}
 
                                 />
                                 <div className=" flex items-center justify-center">
@@ -104,7 +151,7 @@ export default function ContainerExerciseLogs({ index, name,idWorkoutSession}: C
 
                             </div>
                         </TableContainer>
-
+                        </form>
 
                         <h6 className="text-sm mt-2">Séries de hoje</h6>
                         <TableContainer component={Paper}>
@@ -157,7 +204,7 @@ export default function ContainerExerciseLogs({ index, name,idWorkoutSession}: C
                     </div>
                 </AccordionDetails>
             </Accordion>
-            </form>
+            <SlideAlert open={openOrCloseSlider} setOpen={setOpenOrCloseSlider} alertType={alertType} alertText={alertText}></SlideAlert>
         </>
     )
 }

@@ -178,7 +178,7 @@ export default function workNumber({ params, }: { params: { idWorkoutSession: nu
                     <ContainerExerciseLogs 
                     name={res.exercise.name} 
                     index={index}
-                    idWorkoutSession={params.idWorkoutSession}
+                    exerciseId={res.exercise.id}
                     >
 
                     </ContainerExerciseLogs>
