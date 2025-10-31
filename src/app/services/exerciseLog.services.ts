@@ -17,5 +17,29 @@ export const useExerciseLog = () => {
         return response;
     };
 
-    return {create}
+    const findByUserIdAndExerciseIdAndDate = async (userId:number, exerciseId:number, date: string) => {
+        const response: AxiosResponse<ExerciseLog> = await httpClient.get<ExerciseLog>(url+`/user-id/${userId}/exercise-id/${exerciseId}/date/${date}`);
+        return response;
+    }
+
+    const findByUserIdAndExerciseId = async (userid:number, exerciseId:number) => {
+      const response: AxiosResponse<ExerciseLog> = await httpClient.get<ExerciseLog>(url+`/user-id/${userid}/exercise-id/${exerciseId}`);
+      const a: Date[] = response.data.map((item: any) => item.log_date.split('T')[0]);
+      const set = new Set(a);
+      const array = [...set];
+      return array;
+    }
+
+    const deleteExerciseLog = async (exerciseLogId:number) => {
+      try{
+        console.log(exerciseLogId);
+        const response = await httpClient.delete(`${url}/id/${exerciseLogId}`);    
+        return response.status;
+      }
+        catch (error){
+        console.error("Erro ao deletar o registro de exercício:", error)
+        return error;
+      } 
+    }
+    return {create,findByUserIdAndExerciseIdAndDate,deleteExerciseLog,findByUserIdAndExerciseId}
 }

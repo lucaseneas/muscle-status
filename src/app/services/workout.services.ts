@@ -3,6 +3,7 @@ import { User } from "@/types/user";
 import { Workout } from "@/types/workout";
 import { Description } from "@mui/icons-material";
 import axios, { AxiosResponse } from "axios";
+import { revalidatePath } from "next/cache";
 require('dotenv').config();
 
 const baseURL = process.env.NEXT_PUBLIC_BASEURL;

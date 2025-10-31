@@ -7,9 +7,11 @@ export default NextAuth({
 
     secret: process.env.NEXT_AUTH_SECRET,
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 5 * 60, // 5 minutos em segundos
+         updateAge: 0 // desativa atualização automática (sliding) da sessão
     },
-    jwt: { secret: process.env.JWT_SIGININ_PRIVATE_KEY, maxAge: 60 * 60 * 60 },
+    jwt: { secret: process.env.JWT_SIGININ_PRIVATE_KEY, maxAge: 5*60 },
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
@@ -60,21 +62,35 @@ export default NextAuth({
 
     callbacks: {
         async jwt({ token, user }) {
+            console.log("JWT callback cima - user?", !!user, "existing token.exp:", (token as any).exp);
+            // Executa no signin (user existe) e em chamadas subsequentes (user undefined).
             if (user) {
                 console.log(token)
               // Inclui informações do usuário no token
               token.email = user.email;
               token.token = user.token;
               token.id = user.id;
+              // define exp apenas ao criar o token (sign-in)
+                if (!(token as any).exp) {
+                    console.log("JWT callback - setting exp at sign-in:", (token as any).exp);
+                    (token as any).exp = Math.floor(Date.now() / 1000) + 5 * 60; // 5 minutos
+                }
             }
             return token;
           },
           async session({ session, token }) {
+             // session.expires deve refletir token.exp (se existir)
+             console.log("SESSION callback - session.expires:", session.expires);
+            //if ((token as any).exp) {
+            //    console.log("SESSION callback - session.expires:", session.expires);
+            //    session.expires = new Date((token as any).exp * 1000).toISOString();
+            //}
             if (token) {
               // Inclui informações do token na sessão
               session.user.email = token.email;
               session.accessToken = token.token;
               session.id = token.id;
+
             }
             return session;
           },

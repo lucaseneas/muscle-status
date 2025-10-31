@@ -25,6 +25,7 @@ import { fetchData } from "next-auth/client/_utils"
 import ModalEditWorkout from "@/components/ModalWorkout/ModalEditWorkout/ModalEditWorkout"
 import { ModalAddWorkout } from "@/components/ModalWorkout/ModalAddWorkout/ModalAddWorkout"
 import ModalRemoveWorkout from "@/components/ModalWorkout/ModalRemoveWorkout/ModalRemoveWorkout"
+import { revalidatePath } from "next/cache"
 
 
 metadata.pageTitle = "Treinos"
@@ -91,10 +92,10 @@ export default function workout() {
             }
             fetchData();
         }
-
+        
 
     }, [session]);
-
+    
 
     return (
         <main title="Treinos" className="">

@@ -20,7 +20,8 @@ export default function ModalRemoveWorkout({ state, setState, data }: ModalRemov
     //Remove o Treino
     const removeWorkout = async () => {
         //e.preventDefault();
-        window.location.reload();
+        //Esse fazia a pagina recarregar
+       // window.location.reload();
         const response = await useWorkoutService().deleteWorkout(workout.id);
         if ((response as Response).status === 200) {
             setOpenOrCloseSlider(true);
